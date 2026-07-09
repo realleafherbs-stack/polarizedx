@@ -3,32 +3,25 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useCart } from "../../context/CartContext";
+import type { StoreProduct } from "../../../lib/products";
 
 const PAGE_SIZE = 12;
+const FALLBACK_IMG = "/images/mockproduct.jpg";
 
-// Mock products — replace with real catalog data later.
-const products = [
-  { id: "leopard-x", name: "LEOPARD X", color: "חום עם נקודות", price: 179 },
-  { id: "clear-x", name: "CLEAR X", color: "שחור", price: 149 },
-  { id: "navy-x", name: "NAVY X", color: "כחול כהה", price: 149 },
-  { id: "wood-x", name: "WOOD X", color: "שחור + עץ", price: 199 },
-  { id: "wild-x", name: "WILD X", color: "ירוק + פסים", price: 199 },
-  { id: "black-x", name: "BLACK X", color: "שחור + עץ", price: 149 },
-];
-
-function ProductCard({ p }: { p: (typeof products)[number] }) {
+function ProductCard({ p }: { p: StoreProduct }) {
   const { addItem } = useCart();
+  const image = p.thumbnail ?? p.images?.[0] ?? FALLBACK_IMG;
   return (
     <div className="flex w-full flex-col rounded-md border border-zinc-200 bg-white p-4 text-center">
       <div className="relative h-40">
-        <Image src="/images/mockproduct.jpg" alt={p.name} fill className="object-contain p-2" />
+        <Image src={image} alt={p.name} fill className="object-contain p-2" />
       </div>
       <p className="mt-2 text-2xl font-bold text-black">{p.name}</p>
-      <p className="mt-2 text-base text-black">{p.color}</p>
+      {p.color && <p className="mt-2 text-base text-black">{p.color}</p>}
       <p className="mt-2 text-2xl font-bold text-black">₪ {p.price}</p>
       <button
         type="button"
-        onClick={() => addItem({ id: p.id, name: p.name, price: p.price, image: "/images/mockproduct.jpg" })}
+        onClick={() => addItem({ id: p.id, name: p.name, price: p.price, image })}
         className="mt-4 rounded-md bg-black px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-800"
       >
         הוסף לסל
@@ -37,7 +30,7 @@ function ProductCard({ p }: { p: (typeof products)[number] }) {
   );
 }
 
-export default function ShopProducts() {
+export default function ShopProducts({ products }: { products: StoreProduct[] }) {
   const [page, setPage] = useState(1);
   const totalPages = Math.max(1, Math.ceil(products.length / PAGE_SIZE));
   const start = (page - 1) * PAGE_SIZE;

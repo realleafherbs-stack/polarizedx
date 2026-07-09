@@ -4,12 +4,14 @@ import SecondPair from "./components/home/SecondPair";
 import WhyX from "./components/home/WhyX";
 import RetailPitch from "./components/home/RetailPitch";
 import BluePair from "./components/home/BluePair";
+import { getProducts } from "../lib/products";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const products = (await getProducts()).slice(0, 4);
   return (
     <main>
       <Hero />
-      <FeaturedProducts />
+      <FeaturedProducts products={products} />
       <SecondPair />
       <WhyX />
       <RetailPitch />

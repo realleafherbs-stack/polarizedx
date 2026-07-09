@@ -4,24 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
+import type { StoreProduct } from "../../../lib/products";
 
-// Mock products — replace with real catalog data later.
-const products = [
-  { id: "navy-x", name: "NAVY X", price: 149 },
-  { id: "classic-x", name: "CLASSIC X", price: 149 },
-  { id: "leopard-x", name: "LEOPARD X", price: 179 },
-  { id: "black-x", name: "BLACK X", price: 149 },
-];
+const FALLBACK_IMG = "/images/mockproduct.jpg";
 
-function ProductCard({ p }: { p: (typeof products)[number] }) {
+function ProductCard({ p }: { p: StoreProduct }) {
+  const image = p.thumbnail ?? p.images?.[0] ?? FALLBACK_IMG;
   return (
     <Link
-      href={`/shop/${p.id}`}
+      href={`/shop/${p.handle || p.id}`}
       className="group mx-auto flex w-full max-w-90 flex-col self-start rounded-md bg-white transition-shadow hover:shadow-md"
     >
       <div className="relative h-44">
         <Image
-          src="/images/mockproduct.jpg"
+          src={image}
           alt={p.name}
           fill
           className="object-contain p-1"
@@ -59,7 +55,7 @@ function TextCta({ className = "", center = false }: { className?: string; cente
   );
 }
 
-export default function FeaturedProducts() {
+export default function FeaturedProducts({ products }: { products: StoreProduct[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ direction: "rtl", align: "start", dragFree: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);

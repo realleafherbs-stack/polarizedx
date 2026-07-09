@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import ProductDetail, { type Review } from "../../components/shop/ProductDetail";
-import { products } from "../../../lib/products-data";
+import { getProducts } from "../../../lib/products";
 
 async function getReviews(productId: string): Promise<Review[]> {
   if (!process.env.CRM_URL) return [];
@@ -17,11 +17,13 @@ async function getReviews(productId: string): Promise<Review[]> {
 }
 
 export async function generateStaticParams() {
+  const products = await getProducts();
   return products.map((p) => ({ id: p.handle || p.id }));
 }
 
 export async function generateMetadata(props: PageProps<"/shop/[id]">) {
   const { id } = await props.params;
+  const products = await getProducts();
   const product = products.find((p) => p.handle === id || p.id === id);
   if (!product) return { title: "מוצר לא נמצא" };
   const title = product.metaTitle || `${product.name} | POLARIZED-X`;
@@ -40,6 +42,7 @@ export async function generateMetadata(props: PageProps<"/shop/[id]">) {
 
 export default async function ProductPage(props: PageProps<"/shop/[id]">) {
   const { id } = await props.params;
+  const products = await getProducts();
   const product = products.find((p) => p.handle === id || p.id === id);
   if (!product) notFound();
 
