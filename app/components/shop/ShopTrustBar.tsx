@@ -10,7 +10,7 @@ const badges: { label: string; icon?: string }[] = [
 
 export default function ShopTrustBar() {
   return (
-    <section className="w-full bg-neutral-50 py-8">
+    <section className="w-full bg-white py-8">
       <div
         dir="rtl"
         className="site-container grid grid-cols-2 gap-8 px-6 text-center sm:grid-cols-4 lg:px-12"
