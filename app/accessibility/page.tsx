@@ -1,13 +1,11 @@
-import SiteHero from "../components/shared/SiteHero";
+import SiteHeroSP from "../components/shared/SiteHeroSP";
 import AccessibilityContent from "../components/accessibility/AccessibilityContent";
-import TrustBadges from "../components/shared/TrustBadges";
 
 export default function AccessibilityPage() {
   return (
     <main>
-      <SiteHero />
+      <SiteHeroSP />
       <AccessibilityContent />
-      <TrustBadges />
     </main>
   );
 }

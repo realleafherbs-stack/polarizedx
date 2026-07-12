@@ -19,7 +19,7 @@ export default function TrustBadges() {
   return (
     <div dir="rtl" className="py-14 px-4 bg-black">
       <p className="mb-22 text-center text-2xl font-semibold tracking-wide text-white">B2B MARKET LTD</p>
-      <div className="grid grid-cols-1 justify-center items-center text-center gap-8 sm:grid-cols-3 sm:gap-6 lg:flex lg:flex-row lg:gap-52">
+      <div className="grid grid-cols-1 justify-center items-center text-center gap-8 sm:grid-cols-3 sm:gap-6 lg:flex lg:flex-row lg:gap-52!">
         {trustBadges.map((badge) => (
           <div key={badge.label} className="flex flex-col items-center gap-2">
             {badge.icon ? (

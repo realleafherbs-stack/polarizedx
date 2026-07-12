@@ -17,8 +17,6 @@ export default function FeatureBar() {
         dir="ltr"
         className="relative mx-auto grid w-full max-w-[1800px] grid-cols-2 px-6 lg:grid-cols-4 lg:divide-x lg:divide-black"
       >
-        <div className="pointer-events-none absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-black lg:hidden" />
-        <div className="pointer-events-none absolute inset-x-6 top-1/2 h-px -translate-y-1/2 bg-black lg:hidden" />
         {features.map((f) => (
           <div
             key={f.en}

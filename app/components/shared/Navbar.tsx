@@ -58,7 +58,6 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [scrolled, setScrolled] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { count: cartCount } = useCart();
   const { count: favCount } = useFavorites();
@@ -69,14 +68,6 @@ export default function Navbar() {
   useEffect(() => {
     if (searchOpen) searchInputRef.current?.focus();
   }, [searchOpen]);
-
-  // Transparent over the hero; solid black once the page is scrolled.
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -91,19 +82,22 @@ export default function Navbar() {
       className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 bg-white ${
         altTheme
           ? "lg:bg-white lg:border-b lg:border-black/10"
-          : scrolled || mobileOpen
-          ? "lg:bg-black lg:border-b lg:border-white/10"
-          : "lg:bg-transparent"
+          : "lg:bg-black lg:border-b lg:border-white/10"
       }`}
     >
-      <nav className="relative mx-auto max-w-5xl lg:max-w-7xl px-6 lg:px-4 lg:h-20 lg:py-2 flex flex-col lg:flex-row lg:items-center lg:justify-between lg:-translate-x-[clamp(0px,calc(45vw_-_576px),208px)]">
+      <nav className="relative mx-auto max-w-5xl lg:max-w-7xl xl:max-w-360 2xl:max-w-420 px-3 sm:px-6 lg:px-4 lg:h-14 lg:py-2 flex flex-col lg:flex-row lg:items-center lg:justify-between">
 
         {/* ── MOBILE + TABLET: single-row layout ── */}
         <div dir="rtl" className="lg:hidden flex items-center justify-between h-14">
-          <button className="p-1.5 sm:p-2" style={{ color: "#000000" }} onClick={() => setMobileOpen(!mobileOpen)} aria-label="תפריט">
-            <span className="block scale-75 sm:scale-100">{mobileOpen ? <CloseIcon /> : <MenuIcon />}</span>
-          </button>
-          <Link href="/" className="absolute left-1/2 translate-x-[calc(-50%+24px)] sm:-translate-x-1/2">
+          <div className="flex items-center">
+            <button className="p-1.5 sm:p-2" style={{ color: "#000000" }} onClick={() => setMobileOpen(!mobileOpen)} aria-label="תפריט">
+              <span className="block scale-75 sm:scale-100">{mobileOpen ? <CloseIcon /> : <MenuIcon />}</span>
+            </button>
+            <button className="p-1" aria-label="חיפוש" onClick={() => setSearchOpen(true)}>
+              <Image src="/icn/search.png" alt="חיפוש" width={24} height={24} className="icon-accent invert" />
+            </button>
+          </div>
+          <Link href="/" className="absolute left-1/2 -translate-x-1/2">
             <Image src="/logo/logo.png" alt="POLARIZED-X" width={140} height={40} className="h-3 w-auto invert sm:h-4" priority />
           </Link>
           <div className="flex items-center">
@@ -125,9 +119,6 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <button className="p-1" aria-label="חיפוש" onClick={() => setSearchOpen(true)}>
-              <Image src="/icn/search.png" alt="חיפוש" width={24} height={24} className="icon-accent invert" />
-            </button>
           </div>
         </div>
 
@@ -185,6 +176,22 @@ export default function Navbar() {
 
         </div>
       </nav>
+
+      {/* Free shipping marquee */}
+      <div dir="ltr" className="overflow-hidden bg-black py-1.5">
+        <div className="flex w-max animate-marquee">
+          {[0, 1].map((group) => (
+            <div key={group} className="flex shrink-0 items-center" aria-hidden={group === 1}>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <span key={i} className="flex items-center gap-2 px-60 text-base font-medium whitespace-nowrap text-white">
+                  <Image src="/icn/wdelivery.png" alt="" width={16} height={16} className="h-4 w-4" />
+                  משלוח חינם בקנייה מעל 199 ₪ · אספקה עד 3 ימי עסקים
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Mobile menu */}
       {mobileOpen && (

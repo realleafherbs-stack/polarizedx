@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"], weight: "400" });
 
 const values: { title: string; text: string; icon?: string; mobileOrder: string }[] = [
-  { title: "בלי חנויות ראווה", text: "השקענו במוצר. לא בשכירות.", icon: "/icn/store.png", mobileOrder: "order-3 sm:order-1" },
+  { title: "בלי חנויות ראווה", text: "שיתוף פעולה עם עסקים מקומיים.", icon: "/icn/store.png", mobileOrder: "order-3 sm:order-1" },
   { title: "בלי פרזנטורים", text: "המוצר מדבר לבד.", icon: "/icn/person.png", mobileOrder: "order-2 sm:order-2" },
   { title: "הפצה ישירה", text: "עד הבית תוך 3 ימי עסקים.", icon: "/icn/wdelivery.png", mobileOrder: "order-1 sm:order-3" },
 ];

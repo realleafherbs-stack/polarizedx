@@ -5,12 +5,12 @@ import { Bebas_Neue, Inter } from "next/font/google";
 const bebasNeue = Bebas_Neue({ subsets: ["latin"], weight: "400" });
 const inter = Inter({ subsets: ["latin"], weight: "700" });
 
-export default function SiteHero() {
+export default function SiteHeroSP() {
   return (
     <section className="w-full bg-black">
       {/* ── Mobile stack ── (image+title → button → product photo → PUT AN X panel) */}
       <div className="md:hidden">
-        <div className="mt-22 sm:mt-10 lg:mt-0 relative min-h-96 sm:min-h-96 lg:min-h-88">
+        <div className="mt-22 sm:mt-10 lg:mt-0 relative min-h-82 sm:min-h-82 lg:min-h-72">
           <Image
             src="/images/mobile/mobilebghomepage.jpg"
             alt=""
@@ -29,15 +29,24 @@ export default function SiteHero() {
           </div>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col bg-white">
           <div className="flex justify-center px-6 pt-3 pb-0">
             <Link
               href="/shop"
               dir="rtl"
-              className="inline-flex items-center gap-4 bg-white px-10 py-4 text-2xl font-semibold text-black transition-colors hover:bg-white hover:text-black"
+              className="inline-flex items-center gap-4 bg-black px-10 py-4 text-xl font-semibold text-white transition-colors hover:bg-white hover:text-black"
             >
               <span>לרכישה</span>
             </Link>
+          </div>
+
+          <div className="relative -mt-10 min-h-64 pointer-events-none">
+            <Image
+              src="/images/hero/hero-sunglasses-transparent.png"
+              alt="POLARIZED-X sunglasses"
+              fill
+              className="object-contain px-4 pb-4 pt-0 select-none pointer-events-none mask-[linear-gradient(to_bottom,black_92%,transparent_100%)]"
+            />
           </div>
         </div>
 
@@ -50,18 +59,16 @@ export default function SiteHero() {
             className="h-56 w-auto object-contain"
           />
           <p dir="rtl" className="mt-2 text-lg leading-relaxed text-white/80">
-            כי &quot;בְּסְדֵר&quot; זה לא מספיק.
-            <br />
             פולורייזד אמיתי. נגיש. כמו שצריך.
           </p>
         </div>
       </div>
 
       {/* ── Desktop split hero ── (dir=ltr locks image-left / panel-right to match design) */}
-      <div dir="ltr" className="mt-30 hidden md:grid md:grid-cols-[75%_25%] items-stretch">
+      <div dir="ltr" className="mt-30 hidden md:grid md:grid-cols-[73%_27%] items-stretch">
 
         {/* Left: background image + overlay content */}
-        <div className="relative min-h-100 lg:min-h-130 xl:min-h-160">
+        <div className="relative min-h-85 lg:min-h-115 xl:min-h-145">
           <Image
             src="/images/mobile/mobilebghomepage.jpg"
             alt=""
@@ -97,8 +104,8 @@ export default function SiteHero() {
 
         {/* Right: black panel split top/bottom */}
         <div className="flex flex-col bg-black">
-          {/* PUT AN X ON IT + tagline */}
-          <div className="flex flex-1 flex-col items-center justify-center px-2 py-2 text-center">
+          {/* Top: PUT AN X ON IT + tagline */}
+          <div className="flex flex-[3] flex-col items-center justify-center px-2 py-2 text-center">
             <Image
               src="/images/hero/putx.png"
               alt="PUT AN X ON IT"
@@ -106,11 +113,18 @@ export default function SiteHero() {
               height={170}
               className="h-32 w-auto object-contain lg:h-44 xl:h-72 mt-1 lg:mt-3"
             />
-            <p dir="rtl" className="-mt-2 mb-3 lg:mb-6 text-xl lg:text-2xl leading-relaxed text-white/80">
-              כי &quot;בְּסְדֵר&quot; זה לא מספיק.
-              <br />
+            <p dir="rtl" className="-mt-2 mb-3 lg:mb-6 text-lg lg:text-xl leading-relaxed text-white/80">
               פולורייזד אמיתי. נגיש. כמו שצריך.
             </p>
+          </div>
+          {/* Bottom: sunglasses product on white */}
+          <div className="relative flex-4 min-h-48 lg:min-h-64 xl:min-h-84 bg-white">
+            <Image
+              src="/images/hero/hero-sunglasses-transparent.png"
+              alt="POLARIZED-X sunglasses"
+              fill
+              className="object-contain p-1 lg:scale-110 select-none pointer-events-none mask-[linear-gradient(to_bottom,black_92%,transparent_100%)]"
+            />
           </div>
         </div>
       </div>

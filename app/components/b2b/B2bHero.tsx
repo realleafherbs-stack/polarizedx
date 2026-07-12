@@ -9,10 +9,10 @@ export default function B2bHero() {
   return (
     <section className="w-full bg-black">
       {/* dir=ltr locks image-left / panel-right to match design */}
-      <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-[76%_24%] items-stretch">
+      <div dir="ltr" className="mt-10 grid grid-cols-1 lg:grid-cols-[85%_15%] items-stretch">
 
         {/* Left: background image + overlay content */}
-        <div className="relative order-2 w-full min-h-120 sm:min-h-0 sm:aspect-375/244 lg:order-1 lg:aspect-auto lg:min-h-180">
+        <div className="relative order-2 w-full min-h-96 sm:min-h-0 sm:aspect-375/244 lg:order-1 lg:aspect-auto! lg:min-h-180!">
           <Image
             src="/images/mobile/mobilebghomepage.jpg"
             alt=""
@@ -29,29 +29,22 @@ export default function B2bHero() {
             quality={100}
             className="hidden object-cover object-[center_10%] select-none pointer-events-none lg:block"
           />
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-end px-8 pb-0 text-center translate-y-6 sm:justify-center sm:px-12 sm:pb-0 sm:translate-y-0 lg:items-start lg:justify-center lg:px-16 lg:text-left lg:translate-x-24 lg:translate-y-32">
-            <p dir="rtl" className="text-white/90 font-normal text-5xl sm:text-6xl">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-end px-8 pb-0 text-center translate-y-6 sm:justify-bottom sm:px-12 sm:pb-0 sm:translate-y-0 lg:items-start lg:justify-bottom lg:px-16 lg:text-left lg:translate-x-24 lg:translate-y-32">
+            <p dir="rtl" className="text-white/90 font-normal text-7xl sm:text-8xl">
               לחנות שלך
             </p>
-            <h1 className={`${bebasNeue.className} text-white leading-[0.95] tracking-tight text-7xl sm:text-8xl lg:text-[clamp(8rem,8vw,12rem)]`}>
+            <h1 className={`${bebasNeue.className} text-white leading-[0.95] tracking-tight text-7xl sm:text-9xl lg:text-[clamp(9rem,9vw,13rem)]!`}>
               POLARIZED-<span className={inter.className}>X</span>
             </h1>
-            <p dir="rtl" className="-mt-1 text-white/90 font-normal text-xl sm:text-2xl lg:text-3xl">
+            <p dir="rtl" className="-mt-1 text-white/90 font-normal text-2xl sm:text-4xl lg:text-5xl">
               קלסיקה אמיתית שהולכת איתך.
             </p>
             <div dir="rtl" className="mt-8 flex flex-col items-center gap-4 lg:flex-row lg:flex-wrap lg:items-center lg:justify-end">
               <Link
                 href="/contact"
-                className="order-1 inline-flex items-center gap-4 self-stretch justify-center bg-white px-10 py-3 text-xl font-semibold text-black transition-colors hover:bg-zinc-200 sm:py-4 lg:order-2 lg:self-start lg:justify-start lg:bg-black lg:py-5 lg:text-white lg:hover:bg-zinc-800"
+                className="mb-5 order-1 inline-flex items-center gap-4 self-stretch justify-center bg-white px-10 py-3 text-xl font-semibold text-black transition-colors hover:bg-zinc-200 sm:py-4 lg:order-2 lg:self-start lg:justify-start lg:bg-black lg:py-5 lg:text-white lg:hover:bg-zinc-800"
               >
                 <span>דבר עם סוכן</span>
-                <span aria-hidden>←</span>
-              </Link>
-              <Link
-                href="/b2b"
-                className="order-2 inline-flex items-center gap-4 self-stretch justify-center bg-white px-10 py-3 text-xl font-semibold text-black transition-colors hover:bg-zinc-200 sm:py-4 lg:order-1 lg:self-start lg:justify-start lg:bg-black lg:py-5 lg:text-white lg:hover:bg-zinc-800"
-              >
-                <span>כניסה לבעלי עסקים</span>
                 <span aria-hidden>←</span>
               </Link>
             </div>
@@ -71,24 +64,15 @@ export default function B2bHero() {
         {/* Right: retail pitch */}
         <div
           dir="rtl"
-          className="flex order-1 min-h-fit w-full flex-col items-center justify-center gap-8 bg-black px-0 py-8 text-center text-white lg:order-2 lg:min-h-145 lg:gap-26 lg:px-6 lg:py-12"
+          className="flex order-1 min-h-fit w-full flex-col items-center justify-center gap-8 bg-black px-0 py-8 text-center text-white lg:order-2 lg:min-h-80! lg:gap-26 lg:px-6 lg:py-12"
         >
-          <p className="mt-10 text-xl leading-relaxed sm:text-2xl lg:text-4xl">
-            מותג אסתטי,
-            <br className="hidden lg:inline" />
-            שקט, שייצב מדהים
-            <br />
-            בעסק שלך.
-            <br className="hidden lg:inline" />
-            ויעשה את העבודה במקומך.
-          </p>
-          <Link
-            href="/contact"
-            className="hidden items-center gap-3 border border-white bg-white px-8 py-3 text-xl font-bold text-black transition-colors hover:bg-white/90 lg:inline-flex"
-          >
-            <span>צור קשר</span>
-            <span aria-hidden>←</span>
-          </Link>
+          <Image
+            src="/images/hero/putx.png"
+            alt=""
+            width={98}
+            height={202}
+            className="mt-5 h-58! w-auto sm:h-64 lg:h-96!"
+          />
         </div>
       </div>
     </section>

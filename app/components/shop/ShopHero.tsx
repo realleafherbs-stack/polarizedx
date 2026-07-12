@@ -9,24 +9,23 @@ export default function ShopHero() {
   return (
     <section className="w-full bg-white">
       {/* dir=ltr locks white-panel-left / black-promo-right to match design */}
-      <div dir="ltr" className="grid grid-cols-1 lg:grid-cols-[78%_22%] items-stretch">
+      <div dir="ltr" className="mt-15 grid grid-cols-1 lg:grid-cols-[78%_22%] items-stretch">
 
         {/* Left: text + product image on white */}
         <div dir="rtl" className="relative flex flex-col items-center bg-white px-8 py-10 text-center sm:px-12 lg:flex-row lg:min-h-[380px] lg:items-center lg:justify-end lg:py-12 lg:text-right lg:px-16">
-          <div className="relative z-10 lg:max-w-[50%] lg:text-left lg:translate-x-[clamp(0px,4vw,4rem)]">
-            <h1 className={`${bebasNeue.className} mt-10 text-black leading-[0.95] tracking-tight text-7xl sm:text-8xl lg:text-[clamp(3rem,8vw,12.5rem)]`}>
+          <div className="shophero-text-offset relative z-10 lg:max-w-[50%] lg:text-left">
+            <h1 className={`${bebasNeue.className} shophero-heading mt-10 text-black leading-[0.95] tracking-tight text-8xl sm:text-9xl`}>
               POLARIZED-X
             </h1>
-            <p className="text-xl font-regular text-black/80 lg:text-3xl">קלסיקה אמיתית שהולכת איתך.</p>
+            <p className="shophero-subtitle text-2xl font-regular text-black/80">קלסיקה אמיתית שהולכת איתך.</p>
             <Link
               href="/shop"
               className="mt-6 inline-flex items-center gap-4 self-center bg-black px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 lg:self-start"
             >
-              <span>מה ה-X שלך</span>
-              <span aria-hidden>←</span>
+              <span>לרכישה</span>
             </Link>
           </div>
-          <div className="relative mt-6 h-56 w-full sm:h-72 lg:absolute lg:inset-y-0 lg:right-5 lg:mt-0 lg:h-auto lg:w-[52%]">
+          <div className="shophero-image-width relative mt-6 h-56 w-full sm:h-72 lg:absolute lg:inset-y-0 lg:left-[70%] lg:mt-10 lg:h-auto! lg:-translate-x-1/2">
             <Image
               src="/images/shop/shophero.jpg"
               alt="POLARIZED-X sunglasses"

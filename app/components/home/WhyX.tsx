@@ -20,7 +20,6 @@ export default function WhyX() {
               <p>בלי תירוצים על המחיר.</p>
             </div>
             <p className="mt-8 text-2xl font-regular sm:text-4xl">6 דגמים. כל אחד עם <span className={inter.className}>X</span> שלו.</p>
-            <p className="mt-2 text-6xl font-semibold">זה ה-<span className={inter.className}>X</span>.</p>
           </div>
         </div>
 

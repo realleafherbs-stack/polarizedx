@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -60,9 +61,6 @@ export default function ProductDetail({ product, relatedProducts = [], reviews =
         <span className="hidden sm:inline-flex self-end text-sm font-normal text-white px-3 py-1 rounded-lg tracking-widest" style={{ background: "#1a1a1a" }}>{product.badge}</span>
       )}
       <h1 className="text-5xl sm:text-6xl lg:text-7xl font-semibold text-black leading-none text-center sm:text-right">{product.name}</h1>
-      {product.description && (
-        <p className="text-base sm:text-lg lg:text-xl font-semibold text-black text-center sm:text-right">{product.description}</p>
-      )}
       {mobile && (
         <div className="flex items-center justify-center gap-3">
           <div className="text-4xl font-normal text-black">₪{activePrice}</div>
@@ -137,19 +135,19 @@ export default function ProductDetail({ product, relatedProducts = [], reviews =
           </div>
           <div className="flex items-center justify-between" dir="rtl">
             <span className="text-base font-medium text-black">כמות</span>
-            <div className="flex items-center gap-7 rounded-lg border px-6 py-1.5" style={{ borderColor: "#1a1a1a" }}>
-              <button onClick={() => setQty((q) => q + 1)} className="text-lg font-normal text-black hover:opacity-70 transition-opacity">+</button>
-              <span className="text-base font-normal text-black">{qty}</span>
-              <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="text-lg font-normal text-black hover:opacity-70 transition-opacity">−</button>
+            <div className="flex items-center gap-7 rounded-lg border px-6 py-4" style={{ borderColor: "#1a1a1a" }}>
+              <button onClick={() => setQty((q) => q + 1)} className="text-2xl font-normal text-black hover:opacity-70 transition-opacity">+</button>
+              <span className="text-xl font-normal text-black">{qty}</span>
+              <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="text-2xl font-normal text-black hover:opacity-70 transition-opacity">−</button>
             </div>
           </div>
         </>
       ) : (
         <div className="flex items-center gap-4" dir="rtl">
           <div className="flex items-center border rounded-xl overflow-hidden" style={{ borderColor: "#d0d0d0" }}>
-            <button onClick={() => setQty((q) => q + 1)} className="w-11 h-11 flex items-center justify-center text-xl font-normal text-black hover:bg-gray-50 transition-colors">+</button>
-            <span className="w-9 h-9 flex items-center justify-center text-base font-normal text-black border-x" style={{ borderColor: "#d0d0d0" }}>{qty}</span>
-            <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-11 h-11 flex items-center justify-center text-xl font-normal text-black hover:bg-gray-50 transition-colors">−</button>
+            <button onClick={() => setQty((q) => q + 1)} className="w-14 h-14 flex items-center justify-center text-2xl font-normal text-black hover:bg-gray-50 transition-colors">+</button>
+            <span className="w-12 h-14 flex items-center justify-center text-xl font-normal text-black border-x" style={{ borderColor: "#d0d0d0" }}>{qty}</span>
+            <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-14 h-14 flex items-center justify-center text-2xl font-normal text-black hover:bg-gray-50 transition-colors">−</button>
           </div>
         </div>
       )}
@@ -224,7 +222,7 @@ export default function ProductDetail({ product, relatedProducts = [], reviews =
         </div>
 
         {/* ── TABLET layout ── */}
-        <div className="hidden sm:grid lg:hidden gap-6 items-start" style={{ gridTemplateColumns: "55fr 45fr" }} dir="ltr">
+        <div className="hidden sm:grid lg:hidden! gap-6 items-start" style={{ gridTemplateColumns: "55fr 45fr" }} dir="ltr">
           <div className="flex flex-col gap-3">
             <div className="rounded-2xl overflow-hidden cursor-zoom-in relative" style={{ aspectRatio: "4/3" }} onClick={() => setLightboxOpen(true)}>
               <Image src={activeImg} alt={product.name} width={700} height={700} className="w-full h-full object-contain p-10" />
@@ -252,18 +250,18 @@ export default function ProductDetail({ product, relatedProducts = [], reviews =
         </div>
 
         {/* ── DESKTOP layout ── */}
-        <div className="hidden lg:grid gap-6 xl:gap-12 items-start mx-auto" style={{ gridTemplateColumns: "55fr 45fr", maxWidth: 1100 }} dir="ltr">
+        <div className="hidden lg:grid gap-6 xl:gap-12 items-start mx-auto" style={{ gridTemplateColumns: "55fr 45fr", maxWidth: 1500 }} dir="ltr">
           <div className="flex gap-2 xl:gap-3">
             <div className="flex flex-col gap-2 shrink-0">
               {allImages.map((img, i) => (
                 <button key={i} onClick={() => setSelectedThumb(i)}
                   className="rounded-xl border-2 overflow-hidden shrink-0"
-                  style={{ width: 140, height: 140, borderColor: selectedThumb === i ? "#1a1a1a" : "#e0e0e0", background: "#ffffff" }}>
+                  style={{ width: 160, height: 120, borderColor: selectedThumb === i ? "#9ca3af" : "#e0e0e0", background: "#ffffff" }}>
                   <Image src={img} alt={`${product.name} ${i + 1}`} width={200} height={200} className="w-full h-full object-contain" />
                 </button>
               ))}
             </div>
-            <div className="flex-1 rounded-3xl overflow-hidden flex items-center justify-center cursor-zoom-in relative" style={{ aspectRatio: "3/4" }} onClick={() => setLightboxOpen(true)}>
+            <div className="flex-1 rounded-3xl overflow-hidden flex items-center justify-center cursor-zoom-in relative border" style={{ aspectRatio: "4/3", borderColor: "#e0e0e0" }} onClick={() => setLightboxOpen(true)}>
               <Image src={activeImg} alt={product.name} width={700} height={700} className="w-full h-full object-contain" />
             </div>
           </div>
@@ -511,11 +509,11 @@ function ProductTabs({ specsRaw, inTheBox, usageInstructions, warrantyInfo }: {
             <Image src="/icn/control.png" alt="" width={28} height={28} className="w-7 h-7 object-contain" />
             <h3 className="text-lg sm:text-2xl lg:text-3xl font-bold text-black">מפרט טכני מלא</h3>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 divide-x divide-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10">
             {cols.map((col, colIdx) => (
-              <div key={colIdx} className="flex flex-col divide-y divide-gray-200">
+              <div key={colIdx} className="flex flex-col">
                 {col.map(([label, value], rowIdx) => (
-                  <div key={rowIdx} className="flex items-center justify-between py-4 px-4">
+                  <div key={rowIdx} className="flex items-center justify-between py-4 px-4 border-b border-gray-400">
                     <div className="flex items-center gap-2 shrink-0">
                       <Image
                         src={SPEC_ICONS[label] ?? "/icn/productPage/icon1.png"}
@@ -591,25 +589,39 @@ function ProductTabs({ specsRaw, inTheBox, usageInstructions, warrantyInfo }: {
 
 function RelatedProducts({ products }: { products: Product[] }) {
   const { addItem } = useCart();
-  const [start, setStart] = useState(0);
-  const perPage = 4;
-  const canPrev = start > 0;
-  const canNext = start + perPage < products.length;
-  const visible = products.slice(start, start + perPage);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ direction: "rtl", align: "start" });
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+
+  const onSelect = useCallback((api: NonNullable<typeof emblaApi>) => {
+    setCanPrev(api.canScrollPrev());
+    setCanNext(api.canScrollNext());
+    setSelectedIndex(api.selectedScrollSnap());
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    setScrollSnaps(emblaApi.scrollSnapList());
+    onSelect(emblaApi);
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
 
   return (
     <div className="site-container mt-16 mb-16" dir="rtl">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold text-black text-center flex-1">לקוחות שקנו את זה אהבו גם</h2>
-        {products.length > perPage && (
+        {products.length > 1 && (
           <div className="flex gap-2">
-            <button onClick={() => setStart((s) => s - perPage)}
+            <button onClick={() => emblaApi?.scrollPrev()}
               disabled={!canPrev}
               className="w-11 h-11 rounded-full flex items-center justify-center transition-colors disabled:opacity-30 hover:opacity-80"
               style={{ background: "#1a1a1a" }}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
             </button>
-            <button onClick={() => setStart((s) => s + perPage)}
+            <button onClick={() => emblaApi?.scrollNext()}
               disabled={!canNext}
               className="w-11 h-11 rounded-full flex items-center justify-center transition-colors disabled:opacity-30 hover:opacity-80"
               style={{ background: "#1a1a1a" }}>
@@ -618,13 +630,15 @@ function RelatedProducts({ products }: { products: Product[] }) {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {visible.map((p) => {
+      <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
+        <div className="flex -ms-3 justify-center">
+        {products.map((p) => {
           const reviewCount = p.reviewCount ?? 0;
           const rating = p.rating ?? 0;
           return (
-            <a key={p.id} href={`/shop/${p.handle || p.id}`}
-              className="border rounded-2xl overflow-hidden hover:shadow-md transition-shadow flex flex-col"
+            <div key={p.id} className="related-slide min-w-0 shrink-0 grow-0 px-3">
+            <a href={`/shop/${p.handle || p.id}`}
+              className="border rounded-2xl overflow-hidden hover:shadow-md transition-shadow flex flex-col h-full"
               style={{ borderColor: "#e5e5e5" }}>
               <div className="bg-white flex items-center justify-center" style={{ aspectRatio: "4/3" }}>
                 {p.thumbnail ? (
@@ -671,9 +685,24 @@ function RelatedProducts({ products }: { products: Product[] }) {
                 </button>
               </div>
             </a>
+            </div>
           );
         })}
+        </div>
       </div>
+      {scrollSnaps.length > 1 && (
+        <div className="mt-6 flex justify-center gap-2">
+          {scrollSnaps.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`עבור למוצר ${i + 1}`}
+              onClick={() => emblaApi?.scrollTo(i)}
+              className={`h-2 rounded-full transition-all ${i === selectedIndex ? "w-6 bg-black" : "w-2 bg-black/25"}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

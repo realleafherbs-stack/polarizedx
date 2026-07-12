@@ -2,23 +2,35 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "../../context/CartContext";
 import type { StoreProduct } from "../../../lib/products";
+import { products as mockProducts } from "../../../lib/products-data";
 
 const PAGE_SIZE = 12;
 const FALLBACK_IMG = "/images/mockproduct.jpg";
+const MOCK_HANDLES = new Set(mockProducts.map((p) => p.handle));
+
+function getProductHref(p: StoreProduct): string {
+  const handle = p.handle || p.id;
+  if (MOCK_HANDLES.has(handle)) return `/shop/${handle}`;
+  const fallback = mockProducts[Math.floor(Math.random() * mockProducts.length)];
+  return `/shop/${fallback.handle}`;
+}
 
 function ProductCard({ p }: { p: StoreProduct }) {
   const { addItem } = useCart();
   const image = p.thumbnail ?? p.images?.[0] ?? FALLBACK_IMG;
   return (
     <div className="flex w-full flex-col rounded-md border border-zinc-200 bg-white p-4 text-center">
-      <div className="relative h-40">
-        <Image src={image} alt={p.name} fill className="object-contain p-2" />
-      </div>
-      <p className="mt-2 text-2xl font-bold text-black">{p.name}</p>
-      {p.color && <p className="mt-2 text-base text-black">{p.color}</p>}
-      <p className="mt-2 text-2xl font-bold text-black">₪ {p.price}</p>
+      <Link href={getProductHref(p)} className="flex flex-col">
+        <div className="relative h-40">
+          <Image src={image} alt={p.name} fill className="object-contain p-2" />
+        </div>
+        <p className="mt-2 text-2xl font-bold text-black">{p.name}</p>
+        {p.color && <p className="mt-2 text-base text-black">{p.color}</p>}
+        <p className="mt-2 text-2xl font-bold text-black">₪ {p.price}</p>
+      </Link>
       <button
         type="button"
         onClick={() => addItem({ id: p.id, name: p.name, price: p.price, image })}
@@ -37,7 +49,7 @@ export default function ShopProducts({ products }: { products: StoreProduct[] })
   const pageProducts = products.slice(start, start + PAGE_SIZE);
 
   return (
-    <section className="w-full bg-white py-10">
+    <section className="w-full py-10" style={{ background: "#f9fafb" }}>
       {/* ── Mobile + tablet: single/two column grid ── */}
       <div dir="rtl" className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 lg:hidden">
         {pageProducts.map((p) => (

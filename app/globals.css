@@ -1,7 +1,92 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-lg: 900px;
+}
+
 html, body {
   overflow-x: hidden;
+}
+
+/* Tailwind's lg: arbitrary-bracket utilities don't compile with the custom
+   --breakpoint-lg above, so this height (matching the sunglasses-drive.jpg
+   672:239 aspect ratio at the current column width) is hand-written.
+   Below lg the column is full-width (w-full); from lg it's lg:w-1/2. */
+@media (max-width: 899.98px) {
+  .bluepair-visual {
+    height: calc(100vw * 239 / 672);
+  }
+}
+@media (min-width: 900px) {
+  .bluepair-visual {
+    height: calc(50vw * 239 / 672);
+  }
+}
+
+/* Related-products slider card widths: hand-written because lg: fraction
+   utilities (e.g. lg:basis-1/3) emit their @media block earlier than sm:'s
+   in the compiled CSS when --breakpoint-lg is overridden above, so sm: wins
+   the cascade at desktop widths instead of lg:. */
+.related-slide {
+  flex-basis: 85%;
+}
+@media (min-width: 640px) {
+  .related-slide {
+    flex-basis: 50%;
+  }
+}
+@media (min-width: 900px) {
+  .related-slide {
+    flex-basis: 33.3333%;
+  }
+}
+
+/* ShopHero text-block offset: the full clamp(0px,14vw,18rem) shift only
+   looks right at 1720px+; below that (but still desktop, 900-1719px) it
+   needs to be smaller so the text doesn't push too far toward the image. */
+@media (min-width: 900px) and (max-width: 1719.98px) {
+  .shophero-text-offset {
+    transform: translateX(clamp(0px, 7vw, 8rem));
+  }
+}
+@media (min-width: 1720px) {
+  .shophero-text-offset {
+    transform: translateX(clamp(0px, 14vw, 18rem));
+  }
+}
+
+/* ShopHero product image: 65% width is right at 1450px+; below that
+   (but still desktop, 900-1449px) it needs to be smaller so it doesn't
+   crowd the text/promo panel. */
+@media (min-width: 900px) and (max-width: 1449.98px) {
+  .shophero-image-width {
+    width: 50%;
+  }
+}
+@media (min-width: 1450px) {
+  .shophero-image-width {
+    width: 65%;
+  }
+}
+
+/* ShopHero heading/subtitle: the 9vw clamp is sized for 1450px+ where the
+   text column is wide enough. Below that (900-1449px) the column is too
+   narrow for it, causing "POLARIZED-X" to wrap and collide with the image. */
+@media (min-width: 900px) and (max-width: 1449.98px) {
+  .shophero-heading {
+    font-size: clamp(2.75rem, 5.3vw, 5rem);
+  }
+  .shophero-subtitle {
+    font-size: clamp(1.125rem, 2vw, 1.75rem);
+  }
+}
+@media (min-width: 1450px) {
+  .shophero-heading {
+    font-size: clamp(3.25rem, 6.5vw, 6.75rem);
+  }
+  .shophero-subtitle {
+    font-size: 2rem;
+  }
 }
 
 /* ── Almoni DL AAA ── */
@@ -49,6 +134,15 @@ html, body {
   --color-accent-base: #cfbfba;
   --color-light: #eeeeee;
   --color-white: #ffffff;
+}
+
+/* Navbar marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 90s linear infinite;
 }
 
 /* Layout */

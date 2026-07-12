@@ -11,25 +11,25 @@ export default function B2bStand() {
 
         {/* Left: text */}
         <div dir="rtl" className="order-2 flex flex-col justify-center bg-black px-8 py-12 text-center text-white sm:px-12 lg:order-1 lg:pl-16 lg:pr-32 lg:text-right">
-          <h2 className="text-4xl font-normal leading-tight lg:text-5xl">הסטנד עם ה-</h2>
-          <p className="-mt-2 text-8xl leading-none lg:mr-28 lg:text-9xl">X</p>
-          <p className="mt-6 text-xl text-white lg:text-2xl">סטנד תצוגה ואחסנה באותו מקום.</p>
-          <p className="mt-2 text-3xl font-semibold leading-snug text-white lg:text-4xl">
-            נגיש, מזמין, וקומפקטי.
+          <h2 className="text-4xl font-normal leading-tight lg:text-5xl">הסטנד לחנות שלך.</h2>
+          <p className="mt-2 text-3xl font-regular leading-snug text-white lg:text-4xl">
+            נראה מצוין.
             <br />
-            נראה מכל מקום.
+            תופס מעט מקום.
+            <br />
+            משאיר רושם גדול.
           </p>
           <p className="mt-8 text-lg text-white lg:text-xl">51 x 19 x 11.5 ס&quot;מ</p>
           <p className="mt-1 text-lg text-white lg:text-xl">כולל ראי מקדימה</p>
         </div>
 
         {/* Right: stand on white */}
-        <div className="relative order-1 mx-auto min-h-96 w-full max-w-xs bg-white sm:max-w-sm sm:min-h-125 lg:order-2 lg:mx-0 lg:min-h-140 lg:max-w-none">
+        <div className="relative order-1 min-h-96 w-full bg-white sm:min-h-125 lg:order-2 lg:min-h-140">
           <Image
-            src="/images/hero/sunglasses-stand-fix.jpg"
+            src="/images/hero/retailpitch.jpg"
             alt="POLARIZED-X display stand"
             fill
-            className="object-contain p-1"
+            className="object-cover"
           />
         </div>
       </div>

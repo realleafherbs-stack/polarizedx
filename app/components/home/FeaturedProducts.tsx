@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useEffect, useState } from "react";
 import type { StoreProduct } from "../../../lib/products";
 
 const FALLBACK_IMG = "/images/mockproduct.jpg";
@@ -56,45 +54,14 @@ function TextCta({ className = "", center = false }: { className?: string; cente
 }
 
 export default function FeaturedProducts({ products }: { products: StoreProduct[] }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ direction: "rtl", align: "start", dragFree: true });
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-
-  const onSelect = useCallback((api: NonNullable<typeof emblaApi>) => {
-    setSelectedIndex(api.selectedScrollSnap());
-  }, []);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    setScrollSnaps(emblaApi.scrollSnapList());
-    onSelect(emblaApi);
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-  }, [emblaApi, onSelect]);
-
   return (
-    <section className="w-full pt-5 pb-5 bg-[#f5f5f5]">
-      {/* ── Mobile + tablet: text/CTA above slider ── */}
+    <section className="w-full pt-5 pb-5 bg-[#DBDBDB]">
+      {/* ── Mobile + tablet: text/CTA above stacked column ── */}
       <div className="lg:hidden px-6 py-10">
         <TextCta className="mb-8" center />
-        <div dir="rtl" className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-4">
-            {products.map((p) => (
-              <div key={p.id} className="min-w-[clamp(11rem,45vw,15rem)] shrink-0 sm:min-w-[clamp(11rem,30vw,15rem)]">
-                <ProductCard p={p} />
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="mt-4 flex justify-center gap-2">
-          {scrollSnaps.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={`עבור למוצר ${i + 1}`}
-              onClick={() => emblaApi?.scrollTo(i)}
-              className={`h-2 rounded-full transition-all ${i === selectedIndex ? "w-6 bg-black" : "w-2 bg-black/25"}`}
-            />
+        <div dir="rtl" className="flex flex-col gap-4">
+          {products.map((p) => (
+            <ProductCard key={p.id} p={p} />
           ))}
         </div>
       </div>

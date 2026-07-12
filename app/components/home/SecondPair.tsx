@@ -25,11 +25,11 @@ export default function SecondPair() {
           >
             <h2 className="text-4xl font-normal lg:text-5xl">זוג שני - 100 ₪</h2>
             <p className="mt-12 text-2xl font-normal leading-snug lg:text-3xl">
-              כל דגם שתבחר. כל שילוב.
+              כל זוג.
+              <br />
+              כל שילוב.
               <br />
               כי זוג אחד אף פעם לא מספיק.
-              <br />
-              <span className={inter.className}>X</span>
             </p>
           </div>
         </div>
@@ -37,23 +37,21 @@ export default function SecondPair() {
         <Link
           href="/shop"
           dir="rtl"
-          className="absolute bottom-8 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-4 whitespace-nowrap bg-black px-7 py-3 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 sm:gap-6 sm:px-10 sm:py-4 sm:text-xl"
+          className="absolute bottom-8 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-3 whitespace-nowrap bg-black px-7 py-3 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 sm:gap-4 sm:px-8 sm:py-3 sm:text-lg"
         >
-          <span>מה ה-<span className={inter.className}>X</span> שלך</span>
-          <span aria-hidden>←</span>
+          <span>לרכישה</span>
         </Link>
 
         {/* Right: packaging on white */}
-        <div dir="rtl" className="order-1 flex flex-col bg-white px-8 py-10 sm:px-12 lg:order-2">
-          <h2 className="text-right text-3xl font-semibold text-black lg:text-4xl">
+        <div dir="rtl" className="order-1 flex flex-col bg-white px-8 py-6 sm:px-12 lg:order-2">
+          <h2 className="text-right text-3xl font-bold text-black lg:text-5xl">
             אריזה שלא תרצה לזרוק.
           </h2>
-          <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-end">
+          <p className="mt-6 text-right text-xl font-regular text-black lg:text-2xl">
+            חוויה שמתחילה עוד לפני שמרכיבים את המשקפיים.
+          </p>
+          <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-center">
             <div className="w-fit shrink-0 text-right text-2xl leading-snug text-black">
-              <p>כל משקף מגיע עם:</p>
-              <p>קופסה מעוצבת.</p>
-              <p>תיק פנימי לשמירה.</p>
-              <p>מטלית לניקוי.</p>
             </div>
             <div className="relative aspect-429/310 w-full mt-8 max-w-sm md:max-w-md lg:max-w-xl lg:flex-1">
               <Image

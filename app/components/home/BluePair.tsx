@@ -9,34 +9,39 @@ export default function BluePair() {
   return (
     <section className="w-full bg-white">
       {/* dir=ltr locks text-left / image-right to match design */}
-      <div dir="ltr" className="flex flex-col items-center lg:flex-row">
+      <div dir="ltr" className="flex flex-col items-stretch lg:flex-row">
 
         {/* Left: text */}
-        <div dir="rtl" className="px-8 pt-12 pb-0 text-center text-black sm:px-12 lg:w-1/2 lg:py-0 lg:pl-[min(240px,16.67vw)] lg:pr-2 lg:text-left">
+        <div dir="rtl" className="flex flex-col justify-center px-8 pt-12 pb-8 text-right text-black sm:px-12 lg:w-1/2 lg:py-0 lg:pr-[min(240px,16.67vw)] lg:pl-2">
           <div className="w-full">
-            <h2 className={`${bebasNeue.className} text-6xl leading-none tracking-tight sm:text-8xl md:text-9xl lg:text-[clamp(48px,7.5vw,160px)]`}>
+            <h2 className={`${bebasNeue.className} text-6xl leading-none tracking-tight sm:text-8xl md:text-9xl lg:text-[clamp(40px,6vw,160px)]!`}>
               POLARIZED-<span className={inter.className}>X</span>
             </h2>
-            <p className="-mt-2 text-xl font-semibold sm:text-2xl md:text-3xl lg:text-2xl">קלסיקה אמיתית שהולכת איתך.</p>
-            <Link
-              href="/shop"
-              dir="rtl"
-              className="mt-6 inline-flex items-center gap-4 self-center bg-black px-8 py-4 text-xl font-semibold text-white transition-colors hover:bg-zinc-800 lg:self-start"
-            >
-              <span>מה ה-<span className={inter.className}>X</span> שלך</span>
-              <span aria-hidden>←</span>
-            </Link>
+            <div className="mt-6 flex flex-col items-start justify-center gap-4 sm:flex-row sm:items-end sm:justify-start lg:gap-6">
+              <p className="text-xl font-semibold sm:text-3xl md:text-4xl lg:text-xl! xl:text-3xl!">
+                <span className={inter.className}>POLARIZED</span> אמיתיים.
+                <br />
+                הבדל שנראה. הבדל שמרגישים.
+              </p>
+              <Link
+                href="/shop"
+                dir="rtl"
+                className="mb-2 inline-flex shrink-0 items-center gap-3 bg-black px-6 py-2.5 text-base font-semibold text-white transition-colors hover:bg-zinc-800 sm:gap-4 sm:px-8 sm:py-3 sm:text-lg"
+              >
+                <span>לרכישה</span>
+              </Link>
+            </div>
           </div>
         </div>
 
         {/* Right: blue sunglasses */}
-        <div className="relative mx-auto h-52 w-full max-w-2xs overflow-hidden sm:h-96 sm:max-w-lg lg:mx-0 lg:h-[min(420px,29.17vw)] lg:w-1/2 lg:max-w-none">
+        <div className="bluepair-visual relative w-full overflow-hidden lg:w-1/2">
           <Image
-            src="/images/hero/sunglasses-blue.jpg"
+            src="/images/hero/sunglasses-drive.jpg"
             alt="POLARIZED-X sunglasses"
             fill
             quality={100}
-            className="object-contain object-center select-none pointer-events-none lg:scale-90"
+            className="object-cover object-center select-none pointer-events-none"
           />
         </div>
       </div>

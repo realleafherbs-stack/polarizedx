@@ -34,7 +34,7 @@ export default function AboutHero() {
                 dir="rtl"
                 className="mt-8 inline-flex items-center gap-4 self-center border border-white bg-white px-8 py-3 text-lg font-semibold text-black transition-colors hover:bg-white/90 lg:gap-5 lg:self-start lg:border-0 lg:bg-black lg:px-12 lg:py-6 lg:text-2xl lg:text-white lg:hover:bg-zinc-800"
               >
-                <span>מה ה-<span className={inter.className}>X</span> שלך</span>
+                <span>לרכישה</span>
                 <span aria-hidden>←</span>
               </Link>
             </div>
