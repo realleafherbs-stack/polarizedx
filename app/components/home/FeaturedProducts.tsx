@@ -22,7 +22,7 @@ function ProductCard({ p }: { p: StoreProduct }) {
         />
       </div>
       <div className="flex items-center justify-between border-t border-zinc-100 px-3 py-2.5">
-        <span className="text-base font-normal text-black">{p.price} ₪</span>
+        <span dir="rtl" className="text-base font-normal text-black">{p.price} ₪</span>
         <span className="text-lg font-bold text-black">{p.name}</span>
       </div>
     </Link>

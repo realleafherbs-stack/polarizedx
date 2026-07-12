@@ -29,7 +29,7 @@ function ProductCard({ p }: { p: StoreProduct }) {
         </div>
         <p className="mt-2 text-2xl font-bold text-black">{p.name}</p>
         {p.color && <p className="mt-2 text-base text-black">{p.color}</p>}
-        <p className="mt-2 text-2xl font-bold text-black">₪ {p.price}</p>
+        <p className="mt-2 text-2xl font-bold text-black">{p.price} ₪</p>
       </Link>
       <button
         type="button"

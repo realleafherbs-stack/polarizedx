@@ -665,7 +665,7 @@ function RelatedProducts({ products }: { products: Product[] }) {
                 {p.color && (
                   <span className="text-sm sm:text-base lg:text-lg text-gray-500 leading-snug">צבע: {p.color}</span>
                 )}
-                <span className="text-lg sm:text-xl lg:text-2xl font-normal text-black mt-auto" style={{ letterSpacing: "0.04em" }}>₪{p.price}</span>
+                <span className="text-lg sm:text-xl lg:text-2xl font-normal text-black mt-auto" style={{ letterSpacing: "0.04em" }}>{p.price} ₪</span>
               </div>
               <div className="px-4 pb-4">
                 <button className="w-full py-2.5 rounded-xl text-white text-sm font-semibold" style={{ background: "#1a1a1a" }}
