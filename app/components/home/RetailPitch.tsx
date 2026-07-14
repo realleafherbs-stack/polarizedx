@@ -20,7 +20,7 @@ export default function RetailPitch() {
               alt="POLARIZED lenses"
               fill
               quality={100}
-              className="object-contain object-center select-none pointer-events-none"
+              className="object-cover object-center select-none pointer-events-none"
             />
           </div>
         </div>
