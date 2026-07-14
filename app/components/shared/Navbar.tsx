@@ -98,7 +98,7 @@ export default function Navbar() {
             </button>
           </div>
           <Link href="/" className="absolute left-1/2 -translate-x-1/2">
-            <Image src="/logo/logo.png" alt="POLARIZED-X" width={140} height={40} className="h-3 w-auto invert sm:h-4" priority />
+            <Image src="/logo/logo2.png" alt="POLARIZED-X" width={140} height={40} className="h-3 w-auto sm:h-4" priority />
           </Link>
           <div className="flex items-center">
             <Link href="/cart" className="relative p-1" aria-label="עגלת קניות">
@@ -125,7 +125,7 @@ export default function Navbar() {
         {/* ── DESKTOP ONLY: original single-row layout ── */}
         {/* Logo */}
         <Link href="/" className="hidden lg:block shrink-0 lg:order-3">
-          <Image src="/logo/logo.png" alt="POLARIZED-X" width={140} height={40} className={`h-4 w-auto ${altTheme ? "invert" : ""}`} priority />
+          <Image src="/logo/logo2w.png" alt="POLARIZED-X" width={140} height={40} className={`h-4 w-auto ${altTheme ? "invert" : ""}`} priority />
         </Link>
 
         {/* Nav links */}

@@ -43,17 +43,12 @@ export default function SiteHero() {
 
         <div className="flex flex-col items-center justify-center gap-1 bg-black px-6 pt-6 pb-10 text-center">
           <Image
-            src="/images/hero/putx.png"
+            src="/images/hero/puxonit.png"
             alt="PUT AN X ON IT"
             width={260}
             height={170}
             className="h-56 w-auto object-contain"
           />
-          <p dir="rtl" className="mt-2 text-lg leading-relaxed text-white/80">
-            כי &quot;בְּסְדֵר&quot; זה לא מספיק.
-            <br />
-            פולורייזד אמיתי. נגיש. כמו שצריך.
-          </p>
         </div>
       </div>
 
@@ -100,17 +95,12 @@ export default function SiteHero() {
           {/* PUT AN X ON IT + tagline */}
           <div className="flex flex-1 flex-col items-center justify-center px-2 py-2 text-center">
             <Image
-              src="/images/hero/putx.png"
+              src="/images/hero/puxonit.png"
               alt="PUT AN X ON IT"
               width={260}
               height={170}
               className="h-32 w-auto object-contain lg:h-44 xl:h-72 mt-1 lg:mt-3"
             />
-            <p dir="rtl" className="-mt-2 mb-3 lg:mb-6 text-xl lg:text-2xl leading-relaxed text-white/80">
-              כי &quot;בְּסְדֵר&quot; זה לא מספיק.
-              <br />
-              פולורייזד אמיתי. נגיש. כמו שצריך.
-            </p>
           </div>
         </div>
       </div>

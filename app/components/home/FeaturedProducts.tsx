@@ -13,7 +13,7 @@ function ProductCard({ p }: { p: StoreProduct }) {
       href={`/shop/${p.handle || p.id}`}
       className="group mx-auto flex w-full max-w-90 flex-col self-start rounded-md bg-white transition-shadow hover:shadow-md"
     >
-      <div className="relative h-44">
+      <div className="relative h-56">
         <Image
           src={image}
           alt={p.name}
@@ -21,9 +21,9 @@ function ProductCard({ p }: { p: StoreProduct }) {
           className="object-contain p-1"
         />
       </div>
-      <div className="flex items-center justify-between border-t border-zinc-100 px-3 py-2.5">
-        <span dir="rtl" className="text-base font-normal text-black">{p.price} ₪</span>
-        <span className="text-lg font-bold text-black">{p.name}</span>
+      <div dir="rtl" className="flex flex-col gap-1 border-t border-zinc-100 px-3 py-2.5 text-right">
+        <span className="line-clamp-2 text-lg font-bold leading-snug text-black">{p.name}</span>
+        <span className="text-base font-normal text-black">{p.price} ₪</span>
       </div>
     </Link>
   );
