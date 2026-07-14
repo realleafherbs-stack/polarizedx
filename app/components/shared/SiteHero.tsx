@@ -33,7 +33,7 @@ export default function SiteHero() {
             <Link
               href="/shop"
               dir="rtl"
-              className="inline-flex items-center gap-4 bg-white px-10 py-4 text-2xl font-semibold text-black transition-colors hover:bg-white hover:text-black"
+              className="inline-flex items-center gap-4 bg-white px-12 py-4 text-2xl font-semibold text-black transition-colors hover:bg-white hover:text-black"
             >
               <span>לרכישה</span>
             </Link>
@@ -81,7 +81,7 @@ export default function SiteHero() {
             <Link
               href="/shop"
               dir="rtl"
-              className="mt-8 inline-flex items-center gap-3 self-start bg-black px-12 py-4 text-2xl font-semibold text-white transition-colors hover:bg-zinc-800"
+              className="mt-8 inline-flex items-center gap-3 self-start bg-black px-14 py-4 text-2xl font-semibold text-white transition-colors hover:bg-zinc-800"
             >
               <span>לרכישה</span>
             </Link>

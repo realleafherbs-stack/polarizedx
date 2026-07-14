@@ -31,7 +31,7 @@ export default function OrangePair() {
             <Link
               href="/shop"
               dir="rtl"
-              className="mt-6 inline-flex items-center gap-4 self-center bg-black px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 lg:self-start lg:px-10! lg:py-5! lg:text-xl!"
+              className="mt-6 inline-flex items-center gap-4 self-center bg-black px-10 py-4 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 lg:self-start lg:px-12! lg:py-5! lg:text-xl!"
             >
               <span>לרכישה</span>
             </Link>

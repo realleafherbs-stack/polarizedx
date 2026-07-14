@@ -14,13 +14,13 @@ export default function ShopHero() {
         {/* Left: text + product image on white */}
         <div dir="rtl" className="relative flex flex-col items-center bg-white px-8 py-10 text-center sm:px-12 lg:flex-row lg:min-h-[380px] lg:items-center lg:justify-end lg:py-12 lg:text-right lg:px-16">
           <div className="shophero-text-offset relative z-10 lg:max-w-[50%] lg:text-left">
-            <h1 className={`${bebasNeue.className} shophero-heading mt-10 text-black leading-[0.95] tracking-tight text-8xl sm:text-9xl`}>
-              POLARIZED-X
+            <h1 dir="ltr" className={`${bebasNeue.className} shophero-heading mt-10 text-black leading-[0.95] tracking-tight text-8xl sm:text-9xl`}>
+              POLARIZED-<img src="/images/xmark.png" alt="X" className="inline-block h-[0.72em] w-auto align-baseline invert" />
             </h1>
             <p className="shophero-subtitle text-2xl font-regular text-black/80">קלסיקה אמיתית שהולכת איתך.</p>
             <Link
               href="/shop"
-              className="mt-6 inline-flex items-center gap-4 self-center bg-black px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 lg:self-start"
+              className="mt-6 inline-flex items-center gap-4 self-center bg-black px-10 py-4 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 lg:self-start"
             >
               <span>לרכישה</span>
             </Link>
@@ -49,7 +49,9 @@ export default function ShopHero() {
           <div className={`${inter.className} flex flex-col items-center`}>
             <p className="text-2xl lg:text-2xl">6 דגמים</p>
             <p className="text-2xl lg:text-2xl">כל אחד עם ה-</p>
-            <p className="text-8xl font-regular leading-none lg:text-8xl mt-2">X</p>
+            <p className="text-8xl font-regular leading-none lg:text-8xl mt-2">
+              <img src="/images/xmark.png" alt="X" className="inline-block h-[0.72em] w-auto align-baseline" />
+            </p>
             <p className="text-2xl lg:text-2xl">שלו</p>
           </div>
         </div>
