@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { calculateItemsTotal } from "../../lib/pricing";
 
 const STORAGE_KEY = "polarizedx_cart";
 
@@ -22,6 +23,7 @@ interface CartContextType {
   updateQty: (id: string, qty: number) => void;
   clearCart: () => void;
   total: number;
+  savings: number;
   count: number;
   showToast: boolean;
   toastMessage: string;
@@ -76,12 +78,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => setItems([]);
 
-  const total = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const rawTotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const total = calculateItemsTotal(items);
+  const savings = Math.round((rawTotal - total) * 100) / 100;
   const count = items.reduce((sum, i) => sum + i.qty, 0);
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQty, clearCart, total, count, showToast, toastMessage, hideToast: () => setShowToast(false) }}
+      value={{ items, addItem, removeItem, updateQty, clearCart, total, savings, count, showToast, toastMessage, hideToast: () => setShowToast(false) }}
     >
       {children}
     </CartContext.Provider>

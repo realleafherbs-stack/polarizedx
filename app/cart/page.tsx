@@ -27,7 +27,7 @@ function TrashIcon() {
 }
 
 export default function CartPage() {
-  const { items, removeItem, updateQty, total } = useCart();
+  const { items, removeItem, updateQty, total, savings } = useCart();
   const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : 29;
 
   return (
@@ -129,6 +129,12 @@ export default function CartPage() {
                     <span className="text-zinc-500">סכום ביניים</span>
                     <span className="font-semibold text-black">₪{total}</span>
                   </div>
+                  {savings > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-green-600">חיסכון בזוג שני</span>
+                      <span className="font-semibold text-green-600">-₪{savings}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="text-zinc-500">משלוח</span>
                     <span className="font-semibold text-black">

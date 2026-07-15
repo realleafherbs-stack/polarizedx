@@ -42,7 +42,7 @@ function LockIcon() {
 }
 
 export default function CheckoutPage() {
-  const { items, total } = useCart();
+  const { items, total, savings } = useCart();
   const shipping = total >= 199 ? 0 : 29;
 
   const [step, setStep] = useState<Step>("shipping");
@@ -281,6 +281,12 @@ export default function CheckoutPage() {
                     <span className="text-zinc-500">סכום ביניים</span>
                     <span className="text-black">₪{total.toFixed(2)}</span>
                   </div>
+                  {savings > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-green-600">חיסכון בזוג שני</span>
+                      <span className="text-green-600">-₪{savings.toFixed(2)}</span>
+                    </div>
+                  )}
                   {discount > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-green-600">הנחה ({appliedCoupon?.code})</span>

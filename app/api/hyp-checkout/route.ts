@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getProducts, SHIPPING_FEE, FREE_SHIPPING_THRESHOLD } from "../../../lib/products";
+import { calculateItemsTotal } from "../../../lib/pricing";
 
 export interface CartItem {
   id: string;
@@ -47,14 +48,15 @@ export async function POST(req: NextRequest) {
   }
 
   const products = await getProducts();
-  let itemsTotal = 0;
+  const pricedItems: { price: number; qty: number }[] = [];
   for (const item of items) {
     const product = products.find((p) => p.id === item.id || p.variantId === item.id);
     if (!product) {
       return NextResponse.json({ error: `Unknown product: ${item.id}` }, { status: 400 });
     }
-    itemsTotal += product.price * item.qty;
+    pricedItems.push({ price: product.price, qty: item.qty });
   }
+  const itemsTotal = calculateItemsTotal(pricedItems);
 
   let discount = 0;
   if (coupon) {
