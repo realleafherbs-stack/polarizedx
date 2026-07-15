@@ -23,6 +23,7 @@ interface CartContextType {
   updateQty: (id: string, qty: number) => void;
   clearCart: () => void;
   total: number;
+  rawTotal: number;
   savings: number;
   count: number;
   showToast: boolean;
@@ -85,7 +86,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQty, clearCart, total, savings, count, showToast, toastMessage, hideToast: () => setShowToast(false) }}
+      value={{ items, addItem, removeItem, updateQty, clearCart, total, rawTotal, savings, count, showToast, toastMessage, hideToast: () => setShowToast(false) }}
     >
       {children}
     </CartContext.Provider>

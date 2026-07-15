@@ -42,7 +42,7 @@ function LockIcon() {
 }
 
 export default function CheckoutPage() {
-  const { items, total, savings } = useCart();
+  const { items, total, rawTotal, savings } = useCart();
   const shipping = total >= 199 ? 0 : 29;
 
   const [step, setStep] = useState<Step>("shipping");
@@ -279,7 +279,7 @@ export default function CheckoutPage() {
                 <div className="flex flex-col gap-2 border-t border-zinc-200 pt-4">
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-500">סכום ביניים</span>
-                    <span className="text-black">₪{total.toFixed(2)}</span>
+                    <span className="text-black">₪{rawTotal.toFixed(2)}</span>
                   </div>
                   {savings > 0 && (
                     <div className="flex justify-between text-sm">
