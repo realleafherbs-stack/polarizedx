@@ -33,7 +33,7 @@ export default function AboutHero() {
                 dir="rtl"
                 className="mt-8 inline-flex items-center gap-4 self-center border border-white bg-white px-10 py-3 text-lg font-semibold text-black transition-colors hover:bg-white/90 lg:gap-5 lg:self-start lg:border-0 lg:bg-black lg:px-14 lg:py-6 lg:text-2xl lg:text-white lg:hover:bg-zinc-800"
               >
-                <span>לרכישה</span>
+                <span>לחץ לרכישה</span>
                 <span aria-hidden>←</span>
               </Link>
             </div>

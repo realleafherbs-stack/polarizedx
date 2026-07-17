@@ -28,7 +28,7 @@ export default function BluePair() {
                 dir="rtl"
                 className="mb-2 inline-flex shrink-0 items-center gap-3 bg-black px-8 py-2.5 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 sm:gap-4 sm:px-10 sm:py-3 sm:text-xl"
               >
-                <span>לרכישה</span>
+                <span>לחץ לרכישה</span>
               </Link>
             </div>
           </div>

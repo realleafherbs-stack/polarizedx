@@ -78,7 +78,7 @@ export default function ShopProducts({ products }: { products: StoreProduct[] })
       {/* ── Desktop: grid ── */}
       <div
         dir="rtl"
-        className="site-container hidden lg:grid lg:grid-cols-[repeat(4,clamp(14rem,17vw,19rem))] justify-center gap-x-6 gap-y-6 px-12"
+        className="site-container hidden lg:grid lg:grid-cols-[repeat(3,clamp(14rem,17vw,19rem))] justify-center gap-x-6 gap-y-6 px-12"
       >
         {pageProducts.map((p) => (
           <ProductCard key={p.id} p={p} />

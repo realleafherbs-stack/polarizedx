@@ -7,7 +7,7 @@ import BluePair from "./components/home/BluePair";
 import { getProducts } from "../lib/products";
 
 export default async function HomePage() {
-  const products = (await getProducts()).slice(0, 4);
+  const products = await getProducts();
   return (
     <main>
       <Hero />

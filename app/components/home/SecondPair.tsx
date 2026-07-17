@@ -39,7 +39,7 @@ export default function SecondPair() {
           dir="rtl"
           className="absolute bottom-8 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-3 whitespace-nowrap bg-black px-9 py-3 text-lg font-semibold text-white transition-colors hover:bg-zinc-800 sm:gap-4 sm:px-10 sm:py-3 sm:text-lg"
         >
-          <span>לרכישה</span>
+          <span>לחץ לרכישה</span>
         </Link>
 
         {/* Right: packaging on white */}
