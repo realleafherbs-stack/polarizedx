@@ -82,7 +82,7 @@ export default function SiteHero() {
           <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-black/45" />
 
           {/* Left: headline right-aligned, CTA + wordmark on the start edge */}
-          <div className="absolute mt-15 inset-y-0 left-0 flex w-[90%] flex-col justify-center gap-4 px-8 lg:gap-5 lg:px-16">
+          <div className="absolute mt-15 inset-y-0 left-0 flex w-[90%] flex-col justify-center gap-4 px-8 lg:gap-5 lg:px-6">
             <h1 dir="rtl" className="text-right font-bold leading-[0.92] text-white text-[clamp(1.5rem,3.5vw,4.5rem)]">
               משקפי שמש
               <br />
