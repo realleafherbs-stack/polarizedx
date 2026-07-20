@@ -3,34 +3,7 @@ import Link from "next/link";
 
 /* The promo panel's diagonal gold edge. Kept here so the gold layer and the
    textured layer above it always slice on the exact same angle. */
-const BLADE = { ["--blade" as string]: "30%" };
 const MOBILE_BLADE = { ["--blade-y" as string]: "16%" };
-
-function PromoPanel() {
-  return (
-    <div dir="rtl" className="absolute inset-0 flex translate-x-[12%] flex-col items-center justify-center gap-3 px-3 text-center xl:gap-4">
-      <Image
-        src="/images/hero/puxonit-trim.png"
-        alt="PUT AN X ON IT"
-        width={132}
-        height={169}
-        priority
-        className="h-auto w-[74%] max-w-36 select-none"
-      />
-      <span className="h-px w-14 bg-gold" />
-      <p className="font-semibold leading-tight text-white text-[clamp(2.6rem,3vw,3rem)]">
-        זוג שני
-        <br />
-        ב-
-        <span className="align-middle font-black text-gold text-[clamp(3.5rem,4.5vw,5.4rem)]">99</span>
-        {" "}₪
-        <br />
-        בלבד
-      </p>
-      <p className="text-[1.1rem] leading-tight text-white">הזול מביניהם · עד גמר המלאי</p>
-    </div>
-  );
-}
 
 export default function SiteHero() {
   return (
@@ -49,7 +22,7 @@ export default function SiteHero() {
           />
           <div className="absolute inset-0" />
           <div dir="rtl" className="absolute inset-x-0 bottom-0 flex flex-col gap-3 px-6 pb-19">
-            <h1 className="text-center font-black leading-[0.92] text-white text-5xl sm:text-6xl">
+            <h1 className="text-center font-black leading-[1] text-white text-5xl sm:text-6xl">
               משקפי שמש
               <br />
        <img src="/images/xmark.png" alt="X" className="inline-block h-[0.72em] w-auto align-baseline" />-POLARIZED
@@ -109,40 +82,24 @@ export default function SiteHero() {
           <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-black/45" />
 
           {/* Left: headline right-aligned, CTA + wordmark on the start edge */}
-          <div className="absolute mt-15 inset-y-0 left-0 flex w-[52%] flex-col justify-center gap-4 px-8 lg:gap-5 lg:px-16">
-            <h1 dir="rtl" className="text-left font-bold leading-[0.92] text-white text-[clamp(1.5rem,3.5vw,4.5rem)]">
+          <div className="absolute mt-15 inset-y-0 left-0 flex w-[90%] flex-col justify-center gap-4 px-8 lg:gap-5 lg:px-16">
+            <h1 dir="rtl" className="text-right font-bold leading-[0.92] text-white text-[clamp(1.5rem,3.5vw,4.5rem)]">
               משקפי שמש
               <br />
               <img src="/images/xmark.png" alt="X" className="inline-block h-[0.72em] w-auto align-baseline" />-POLARIZED
             </h1>
-            <p dir="rtl" className="text-left font-normal text-white/85 text-[clamp(1.6rem,2.1vw,2.3rem)]">
+            <p dir="rtl" className="text-right font-normal text-white/85 text-[clamp(1.6rem,2.1vw,2.3rem)]">
               ראייה חדה והגנת UV400 מלאה            </p>
             <Link
               href="/shop"
               dir="rtl"
-              className="mt-1 inline-flex items-center justify-center self-start bg-gold px-16 py-3.5 font-bold text-black transition-opacity hover:opacity-90 text-[clamp(0.95rem,1.15vw,1.35rem)]"
+              className="mt-1 inline-flex items-center justify-center self-end bg-gold px-16 py-3.5 font-bold text-black transition-opacity hover:opacity-90 text-[clamp(0.95rem,1.15vw,1.35rem)]"
             >
               לחץ לרכישה
             </Link>
-            <Image src="/images/hero/glogo.png" alt="POLARIZED-X" width={123} height={16} className="h-3.5 w-auto self-start lg:h-4.5" />
+            <Image src="/images/hero/glogo.png" alt="POLARIZED-X" width={123} height={16} className="h-3.5 w-auto self-end lg:h-4.5" />
           </div>
 
-          {/* Right: promo panel, sliced off the photo by a diagonal gold blade */}
-          <div className="absolute inset-y-0 right-0 w-[30%] lg:w-[26%]">
-            <div className="hero-blade absolute inset-0 bg-gold" style={BLADE} />
-            <div className="hero-blade-inner absolute inset-0" style={BLADE}>
-              <Image
-                src="/images/hero/rbg.jpg"
-                alt=""
-                fill
-                priority
-                quality={100}
-                sizes="25vw"
-                className="object-cover select-none pointer-events-none"
-              />
-              <PromoPanel />
-            </div>
-          </div>
         </div>
       </div>
     </section>
