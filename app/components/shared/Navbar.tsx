@@ -140,7 +140,7 @@ export default function Navbar() {
 
         {/* ── DESKTOP ONLY: original single-row layout ── */}
         {/* Logo */}
-        <Link href="/" className="hidden lg:block shrink-0 lg:order-3">
+        <Link href="/" className="hidden lg:block shrink-0 lg:order-1">
           <Image src="/logo/logo2w.png" alt="POLARIZED-X" width={140} height={40} className={`h-4 w-auto ${altTheme ? "invert" : ""}`} priority />
         </Link>
 
@@ -166,8 +166,8 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Desktop actions — right side in RTL after swap */}
-        <div className="hidden lg:flex items-center gap-3 lg:order-1">
+        {/* Desktop actions — left side in RTL after swap */}
+        <div className="hidden lg:flex items-center gap-3 lg:order-3">
           {/* Favorites — far right in RTL */}
           <Link href="/favorites" className="relative p-2" aria-label="מועדפים">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={altTheme ? "black" : "white"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
