@@ -45,7 +45,7 @@ export default function SiteHero() {
             priority
             quality={100}
             sizes="100vw"
-            className="object-cover scale-150 -translate-y-24 object-[center_60%] select-none pointer-events-none"
+            className="object-cover scale-150 object-[15%_60%] select-none pointer-events-none"
           />
           <div className="absolute inset-0" />
           <div dir="rtl" className="absolute inset-x-0 bottom-0 flex flex-col gap-3 px-6 pb-19">
