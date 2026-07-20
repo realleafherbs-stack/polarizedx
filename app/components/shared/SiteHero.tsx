@@ -52,7 +52,7 @@ export default function SiteHero() {
             <h1 className="text-center font-black leading-[0.92] text-white text-5xl sm:text-6xl">
               משקפי שמש
               <br />
-              POLARIZED-<img src="/images/xmark.png" alt="X" className="inline-block h-[0.72em] w-auto align-baseline" />
+       <img src="/images/xmark.png" alt="X" className="inline-block h-[0.72em] w-auto align-baseline" />-POLARIZED
             </h1>
             <p className="text-center text-xl font-normal text-white/85 sm:text-lg">
               ראייה חדה והגנת UV400 מלאה
@@ -113,7 +113,7 @@ export default function SiteHero() {
             <h1 dir="rtl" className="text-left font-bold leading-[0.92] text-white text-[clamp(1.5rem,3.5vw,4.5rem)]">
               משקפי שמש
               <br />
-              POLARIZED-<img src="/images/xmark.png" alt="X" className="inline-block h-[0.72em] w-auto align-baseline" />
+              <img src="/images/xmark.png" alt="X" className="inline-block h-[0.72em] w-auto align-baseline" />-POLARIZED
             </h1>
             <p dir="rtl" className="text-left font-normal text-white/85 text-[clamp(1.6rem,2.1vw,2.3rem)]">
               ראייה חדה והגנת UV400 מלאה            </p>
