@@ -4,13 +4,64 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { StoreProduct as Product } from "../../../lib/products";
 import { useCart } from "../../context/CartContext";
 import { useFavorites } from "../../context/FavoritesContext";
-import ProductSecondPair from "./ProductSecondPair";
 
 const FALLBACK_IMG = "/images/mockproduct.jpg";
+
+const PAPER = "#f1ece2";
+const PAPER_RAISED = "#fbf8f2";
+const INK = "#11110f";
+const INK_SOFT = "#625d54";
+const LINE = "#d4ccbf";
+
+export type Review = { id: string; name: string; rating: number; text: string; createdAt: string };
+
+function PolarizedProofIcon() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7 shrink-0" style={{ color: "#705809" }}>
+      <path d="M5.5 18.5 9 16h10.5l2.75 2.25h3.5L28.5 16H39l3.5 2.5" />
+      <path d="M8 19.25c.35 7.2 2.45 10.8 7.1 10.8 4.1 0 6.05-2.8 7.15-9.05M40 19.25c-.35 7.2-2.45 10.8-7.1 10.8-4.1 0-6.05-2.8-7.15-9.05" />
+      <path d="M11.5 23.25h7M29.5 23.25h7" />
+    </svg>
+  );
+}
+function UvProofIcon() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7 shrink-0" style={{ color: "#705809" }}>
+      <circle cx="13.5" cy="14" r="4" />
+      <path d="M13.5 6.5V4M13.5 24v-2.5M6 14H3.5M23.5 14H21M27.5 10.5 39 15v8.25c0 8.15-4.65 13.4-11.5 17.25C20.65 36.65 16 31.4 16 23.25V15zM22 25.25 26 29l7.5-8" />
+    </svg>
+  );
+}
+function ShippingProofIcon() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7 shrink-0" style={{ color: "#705809" }}>
+      <path d="M5 11.5h23v23H5zM28 19h7l8 8v7.5H28zM34.5 19v8H43" />
+      <circle cx="12" cy="36" r="3.5" />
+      <circle cx="36.5" cy="36" r="3.5" />
+    </svg>
+  );
+}
+function WarrantyProofIcon() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7 shrink-0" style={{ color: "#705809" }}>
+      <path d="M24 5.5 38 11v10c0 9.9-5.65 16.25-14 21-8.35-4.75-14-11.1-14-21V11z" />
+      <circle cx="24" cy="21" r="7" />
+      <path d="m20.75 21 2.2 2.25 4.7-4.85" />
+    </svg>
+  );
+}
+function CartIcon() {
+  return (
+    <svg viewBox="0 0 22.5 20" fill={INK} className="h-5 w-5">
+      <path d="M0 0.9375C0 0.417969 0.417969 0 0.9375 0H2.71484C3.57422 0 4.33594 0.5 4.69141 1.25H20.7461C21.7734 1.25 22.5234 2.22656 22.2539 3.21875L20.6523 9.16797C20.3203 10.3945 19.207 11.25 17.9375 11.25H6.66797L6.87891 12.3633C6.96484 12.8047 7.35156 13.125 7.80078 13.125H19.0625C19.582 13.125 20 13.543 20 14.0625C20 14.582 19.582 15 19.0625 15H7.80078C6.44922 15 5.28906 14.0391 5.03906 12.7148L3.02344 2.12891C2.99609 1.98047 2.86719 1.875 2.71484 1.875H0.9375C0.417969 1.875 0 1.45703 0 0.9375ZM5 18.125C5 17.8788 5.0485 17.635 5.14273 17.4075C5.23695 17.18 5.37506 16.9733 5.54917 16.7992C5.72328 16.6251 5.92998 16.487 6.15747 16.3927C6.38495 16.2985 6.62877 16.25 6.875 16.25C7.12123 16.25 7.36505 16.2985 7.59253 16.3927C7.82002 16.487 8.02672 16.6251 8.20083 16.7992C8.37494 16.9733 8.51305 17.18 8.60727 17.4075C8.7015 17.635 8.75 17.8788 8.75 18.125C8.75 18.3712 8.7015 18.615 8.60727 18.8425C8.51305 19.07 8.37494 19.2767 8.20083 19.4508C8.02672 19.6249 7.82002 19.763 7.59253 19.8573C7.36505 19.9515 7.12123 20 6.875 20C6.62877 20 6.38495 19.9515 6.15747 19.8573C5.92998 19.763 5.72328 19.6249 5.54917 19.4508C5.37506 19.2767 5.23695 19.07 5.14273 18.8425C5.0485 18.615 5 18.3712 5 18.125ZM18.125 16.25C18.6223 16.25 19.0992 16.4475 19.4508 16.7992C19.8025 17.1508 20 17.6277 20 18.125C20 18.6223 19.8025 19.0992 19.4508 19.4508C19.0992 19.8025 18.6223 20 18.125 20C17.6277 20 17.1508 19.8025 16.7992 19.4508C16.4475 19.0992 16.25 18.6223 16.25 18.125C16.25 17.6277 16.4475 17.1508 16.7992 16.7992C17.1508 16.4475 17.6277 16.25 18.125 16.25Z" />
+    </svg>
+  );
+}
 
 const SPEC_ICONS: Record<string, string> = {
   "עדשות": "/icn/productPage/icon1.png",
@@ -20,8 +71,6 @@ const SPEC_ICONS: Record<string, string> = {
   "התאמה": "/icn/productPage/icon4.png",
   "אחריות": "/icn/productPage/icon9.png",
 };
-
-export type Review = { id: string; name: string; rating: number; text: string; createdAt: string };
 
 export default function ProductDetail({ product, relatedProducts = [], reviews = [] }: { product: Product; relatedProducts?: Product[]; reviews?: Review[] }) {
   const [qty, setQty] = useState(1);
@@ -40,8 +89,8 @@ export default function ProductDetail({ product, relatedProducts = [], reviews =
       ? [product.thumbnail]
       : [FALLBACK_IMG];
   const activeImg = allImages[selectedThumb] ?? FALLBACK_IMG;
-  const cardFeatures = product.cardFeatures ?? [];
-  const fullFeatures = product.features ?? [];
+  const lifestyleImg = allImages.length > 1 ? allImages[1] : null;
+  const avgRating = reviews.length > 0 ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : (product.rating ?? 0);
 
   function addToCart() {
     addItem({
@@ -55,331 +104,217 @@ export default function ProductDetail({ product, relatedProducts = [], reviews =
     }, qty);
   }
 
-  const InfoHeader = ({ mobile = false }: { mobile?: boolean }) => (
-    <div className="flex flex-col gap-4 mt-10 sm:mt-0" dir="rtl">
-      {product.badge && (
-        <span className="hidden sm:inline-flex self-end text-sm font-normal text-white px-3 py-1 rounded-lg tracking-widest" style={{ background: "#1a1a1a" }}>{product.badge}</span>
-      )}
-      <h1 className="text-5xl sm:text-6xl lg:text-7xl font-semibold text-black leading-none text-center sm:text-right">{product.name}</h1>
-      {mobile && (
-        <div className="flex items-center justify-center gap-3">
-          <div className="text-4xl font-normal text-black">₪{activePrice}</div>
-          <div className="flex items-center gap-2 text-base text-green-600 font-semibold shrink-0">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block" />במלאי
-          </div>
-        </div>
-      )}
-      <div className="flex items-center justify-center gap-3 flex-wrap sm:justify-start">
-        <div className="flex gap-0.5">
-          {[1, 2, 3, 4, 5].map((n) => {
-            const avg = reviews.length > 0 ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : (product.rating ?? 0);
-            return (
-              <svg key={n} xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 lg:w-5 lg:h-5" viewBox="0 0 24 24"
-                fill={avg > 0 ? "#f59e0b" : "#e5e7eb"} stroke={avg > 0 ? "#f59e0b" : "#e5e7eb"} strokeWidth="0.5">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-              </svg>
-            );
-          })}
-        </div>
-        {(product.rating || reviews.length > 0) ? (
-          <>
-            <span className="text-base lg:text-base font-bold text-gray-800">
-              {reviews.length > 0 ? Math.round((reviews.reduce((s, r) => s + r.rating, 0) / reviews.length) * 10) / 10 : product.rating}
-            </span>
-            <span className="text-sm lg:text-sm text-gray-400 tracking-wider">(חוות דעת)</span>
-          </>
-        ) : (
-          <span className="text-base lg:text-2xl text-gray-400">אין חוות דעת עדיין</span>
-        )}
-        {product.soldCount && <span className="hidden w-px h-4 bg-gray-300 mx-2 sm:inline-block" />}
-        {product.soldCount && (
-          <span className="flex items-center text-base lg:text-base text-gray-600 font-medium tracking-wider">
-            <span>נמכרו {product.soldCount} יח&apos;</span>
-          </span>
-        )}
-      </div>
-    </div>
-  );
+  return (
+    <section className="px-4 pt-8 pb-16 sm:px-6 sm:pt-10 sm:pb-24 lg:px-10" style={{ background: PAPER }}>
+      <div className="site-container" style={{ maxWidth: 1260 }}>
 
-  const InfoBody = ({ mobile = false }: { mobile?: boolean }) => (
-    <div className="flex flex-col gap-4" dir="rtl">
-      {!mobile && (
-        <div className="flex items-center gap-4 lg:gap-8 my-4">
-          <div className="text-4xl lg:text-4xl font-normal text-black">₪{activePrice}</div>
-          <div className="flex items-center gap-2 text-base lg:text-base text-green-600 font-semibold shrink-0">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block" />במלאי
+        <Link
+          href="/shop"
+          dir="rtl"
+          className="mb-6 inline-flex min-h-12 items-center gap-3 border px-3 text-base transition-transform hover:translate-x-1"
+          style={{ borderColor: LINE, background: PAPER_RAISED, color: INK }}
+        >
+          <span className="grid h-7.5 w-7.5 place-items-center text-lg" style={{ background: INK, color: PAPER_RAISED }}>←</span>
+          <span>חזרה לחנות</span>
+        </Link>
+
+        {/* ── Gallery + purchase panel ── */}
+        <div dir="rtl" className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1.12fr_minmax(360px,0.88fr)] lg:gap-10">
+
+          {/* Gallery */}
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-[1fr_minmax(150px,0.38fr)]">
+            <div
+              className="relative order-1 aspect-square cursor-zoom-in border"
+              style={{ background: "#fff", borderColor: LINE }}
+              onClick={() => setLightboxOpen(true)}
+            >
+              {product.badge && (
+                <span className="absolute right-4 top-4 z-10 px-3 py-1.5 text-sm font-bold" style={{ background: INK, color: PAPER_RAISED }}>
+                  {product.badge}
+                </span>
+              )}
+              <Image src={activeImg} alt={product.name} fill className="object-contain p-[8%]" />
+            </div>
+            {lifestyleImg && (
+              <div className="relative order-2 min-h-45 border sm:min-h-0" style={{ background: "#d9d1c4", borderColor: LINE }}>
+                <Image src={lifestyleImg} alt="" fill className="object-cover" />
+              </div>
+            )}
+            {allImages.length > 1 && (
+              <div className="order-3 flex flex-wrap gap-2.5 sm:col-span-2">
+                {allImages.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedThumb(i)}
+                    className="grid h-18 w-21.5 shrink-0 place-items-center border p-1 transition-transform hover:-translate-y-0.5"
+                    style={{ borderColor: selectedThumb === i ? INK : LINE, borderWidth: selectedThumb === i ? 2 : 1, background: PAPER_RAISED }}
+                  >
+                    <Image src={img} alt="" width={80} height={62} className="h-full w-full object-contain" style={{ background: "#fff" }} />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Purchase panel */}
+          <div dir="rtl" className="border p-6 sm:p-8" style={{ background: PAPER_RAISED, borderColor: LINE, boxShadow: "0 24px 70px rgba(55,43,25,.08)" }}>
+            <span dir="ltr" className="mb-4 block w-max text-sm font-black tracking-[0.1em]" style={{ color: "#705809" }}>
+              PUT AN <span className="align-middle">X</span> ON IT
+            </span>
+            <h1 className="mb-3 text-[clamp(2.6rem,6.5vw,4.2rem)] leading-[0.95] font-black" style={{ color: INK }}>
+              {product.name}
+            </h1>
+
+            <div className="mb-4 flex items-center gap-3 flex-wrap">
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <svg key={n} width="18" height="18" viewBox="0 0 24 24" fill={avgRating >= n ? "#d9b538" : "#e5e0d3"} stroke={avgRating >= n ? "#d9b538" : "#e5e0d3"} strokeWidth="0.5">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                ))}
+              </div>
+              {(product.rating || reviews.length > 0) ? (
+                <span className="text-sm font-bold" style={{ color: INK_SOFT }}>
+                  {reviews.length > 0 ? Math.round((reviews.reduce((s, r) => s + r.rating, 0) / reviews.length) * 10) / 10 : product.rating} ({reviews.length || product.reviewCount || 0})
+                </span>
+              ) : (
+                <span className="text-sm" style={{ color: INK_SOFT }}>אין חוות דעת עדיין</span>
+              )}
+            </div>
+
+            <div className="mb-2 text-[clamp(1.75rem,3vw,2.2rem)] font-black" style={{ color: INK }}>{activePrice} ₪</div>
+            <div className="mb-4 flex items-center gap-2 text-sm font-bold" style={{ color: "#245b35" }}>
+              <span className="h-2 w-2 rounded-full" style={{ background: "#245b35" }} />
+              במלאי
+            </div>
+            {product.description && (
+              <p className="mb-5 text-base leading-relaxed" style={{ color: INK_SOFT }}>{product.description}</p>
+            )}
+
+            <div className="mb-4 flex items-center justify-between gap-4">
+              <strong className="text-base" style={{ color: INK }}>כמות</strong>
+              <div className="flex border" style={{ borderColor: INK, background: PAPER_RAISED }}>
+                <button onClick={() => setQty((q) => q + 1)} className="grid h-12.5 w-13 place-items-center text-xl text-[#11110f] transition-colors hover:bg-[#11110f] hover:text-[#fbf8f2]">+</button>
+                <span className="grid h-12.5 w-13 place-items-center border-x text-xl" style={{ borderColor: LINE, color: INK }}>{qty}</span>
+                <button onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={qty <= 1} className="grid h-12.5 w-13 place-items-center text-xl text-[#11110f] transition-colors hover:bg-[#11110f] hover:text-[#fbf8f2] disabled:opacity-30">−</button>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2.5">
+              <button
+                onClick={addToCart}
+                className="flex items-stretch overflow-hidden text-right transition-transform hover:-translate-y-0.5"
+                style={{ background: INK, color: PAPER_RAISED, minHeight: 68 }}
+              >
+                <span className="grid w-17 shrink-0 place-items-center" style={{ background: "#d9b538" }}>
+                  <CartIcon />
+                </span>
+                <span className="flex flex-1 flex-col justify-center gap-0.5 px-4">
+                  <b className="text-xl font-black">הוסף לסל</b>
+                  <small className="text-xs font-bold" style={{ color: "#cfc8ba" }}>משלוח חינם מעל ₪199</small>
+                </span>
+              </button>
+              <button
+                onClick={() => { addToCart(); router.push("/checkout"); }}
+                className="min-h-13 border font-bold text-[#11110f] underline underline-offset-4 transition-colors hover:bg-[#11110f] hover:text-[#fbf8f2]"
+                style={{ borderColor: INK }}
+              >
+                קנה עכשיו
+              </button>
+            </div>
+
+            <div className="mt-5 flex items-center justify-between border-t pt-3" style={{ borderColor: LINE }}>
+              <button onClick={() => toggle({ id: product.id, name: product.name, price: product.price, thumbnail: product.thumbnail })}
+                className="flex items-center gap-1.5 py-2 text-sm font-medium transition-opacity hover:opacity-70"
+                style={{ color: isFavorite(product.id) ? "#e11d48" : INK_SOFT }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill={isFavorite(product.id) ? "#e11d48" : "none"} stroke={isFavorite(product.id) ? "#e11d48" : INK_SOFT}>
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+                {isFavorite(product.id) ? "הסר ממועדפים" : "שמור למועדפים"}
+              </button>
+              <button onClick={() => { if (navigator.share) { navigator.share({ title: product.name, url: window.location.href }); } else { navigator.clipboard.writeText(window.location.href); } }}
+                className="flex items-center gap-1.5 py-2 text-sm font-medium transition-opacity hover:opacity-70"
+                style={{ color: INK_SOFT }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={INK_SOFT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+                שתף
+              </button>
+            </div>
           </div>
         </div>
-      )}
-      {product.color && (
-        <span className="text-sm font-medium text-gray-600">צבע: {product.color}</span>
-      )}
-      {cardFeatures.length > 0 && (
-        <ul className="flex flex-col gap-2">
-          {cardFeatures.map((f) => (
-            <li key={f} className="flex items-center gap-2">
-              <span className="w-5 h-5 rounded-full bg-black flex items-center justify-center shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" width="11" height="11">
-                  <path fillRule="evenodd" d="M16.704 5.29a1 1 0 0 1 0 1.415l-7.2 7.2a1 1 0 0 1-1.414 0l-3.2-3.2a1 1 0 1 1 1.414-1.414l2.493 2.492 6.493-6.492a1 1 0 0 1 1.414 0Z" clipRule="evenodd" />
-                </svg>
+
+        {/* ── Proof row ── */}
+        <ul dir="rtl" className="mt-6 grid list-none grid-cols-2 gap-y-3 border-y sm:grid-cols-4 sm:gap-y-0" style={{ borderColor: LINE, background: PAPER_RAISED }}>
+          {[
+            { Icon: PolarizedProofIcon, title: "POLARIZED", sub: "הגנה מסנוור" },
+            { Icon: UvProofIcon, title: "UV 400", sub: "הגנה מקרינת UV" },
+            { Icon: ShippingProofIcon, title: "משלוח מהיר", sub: "עד 3 ימי עסקים" },
+            { Icon: WarrantyProofIcon, title: "אחריות ושירות", sub: "שנה אחריות" },
+          ].map(({ Icon, title, sub }, i) => (
+            <li key={title} className="flex min-h-18 items-center gap-2.5 border-e px-3 sm:px-4" style={{ borderColor: i % 2 === 1 ? "transparent" : LINE }}>
+              <Icon />
+              <span className="grid gap-0.5">
+                <b className="text-sm" style={{ color: INK }}>{title}</b>
+                <small className="text-xs leading-tight" style={{ color: INK_SOFT }}>{sub}</small>
               </span>
-              <span className="text-base lg:text-xl text-gray-600">{f}</span>
             </li>
           ))}
         </ul>
-      )}
-      {mobile ? (
-        <>
-          <div className="rounded-lg py-3 px-4 text-center text-sm font-medium text-gray-700" style={{ background: "#f5f5f7" }}>
-            הוסף זוג שני ב-100₪ בלבד. כל דגם.
-          </div>
-          <div className="flex items-center justify-start gap-4" dir="rtl">
-            <span className="text-base font-medium text-black">כמות</span>
-            <div className="flex items-center gap-7 rounded-lg border px-6 py-4" style={{ borderColor: "#1a1a1a" }}>
-              <button onClick={() => setQty((q) => q + 1)} className="text-2xl font-normal text-black hover:opacity-70 transition-opacity">+</button>
-              <span className="text-xl font-normal text-black">{qty}</span>
-              <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="text-2xl font-normal text-black hover:opacity-70 transition-opacity">−</button>
-            </div>
-          </div>
-        </>
-      ) : (
-        <div className="flex items-center gap-4" dir="rtl">
-          <div className="flex items-center border rounded-xl overflow-hidden" style={{ borderColor: "#d0d0d0" }}>
-            <button onClick={() => setQty((q) => q + 1)} className="w-14 h-14 flex items-center justify-center text-2xl font-normal text-black hover:bg-gray-50 transition-colors">+</button>
-            <span className="w-12 h-14 flex items-center justify-center text-xl font-normal text-black border-x" style={{ borderColor: "#d0d0d0" }}>{qty}</span>
-            <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-14 h-14 flex items-center justify-center text-2xl font-normal text-black hover:bg-gray-50 transition-colors">−</button>
-          </div>
-        </div>
-      )}
-      <div className="flex flex-col gap-3 ml-0 sm:ml-6">
-        <button className="w-full py-2.5 text-white text-base lg:text-lg font-normal rounded-lg transition-opacity hover:opacity-90"
-          style={{ background: "#1a1a1a" }} onClick={addToCart}>
-          <span className="flex items-center justify-center gap-2">
-            הוסף לסל
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
-          </span>
-        </button>
-        <button className="w-full py-2.5 text-black text-base lg:text-lg font-normal rounded-lg border-2 transition-colors hover:bg-gray-50"
-          style={{ borderColor: "#1a1a1a" }}
-          onClick={() => { addToCart(); router.push("/checkout"); }}>
-          קנה עכשיו
-        </button>
-      </div>
-      <div className="flex items-center justify-between mx-6 sm:mx-6 pt-3 border-t" style={{ borderColor: "#e5e5e5" }}>
-        <button onClick={() => toggle({ id: product.id, name: product.name, price: product.price, thumbnail: product.thumbnail })}
-          className="flex items-center gap-1.5 py-2 text-sm font-normal transition-all hover:opacity-70"
-          style={{ color: isFavorite(product.id) ? "#e11d48" : "#666" }}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill={isFavorite(product.id) ? "#e11d48" : "none"} stroke={isFavorite(product.id) ? "#e11d48" : "#666"}>
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-          </svg>
-          {isFavorite(product.id) ? "הסר ממועדפים" : "שמור למועדפים"}
-        </button>
-        <button onClick={() => { if (navigator.share) { navigator.share({ title: product.name, url: window.location.href }); } else { navigator.clipboard.writeText(window.location.href); } }}
-          className="flex items-center gap-1.5 py-2 text-sm font-normal hover:opacity-70"
-          style={{ color: "#666" }}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-          </svg>
-          שתף
-        </button>
-      </div>
-    </div>
-  );
 
-  return (
-    <section className="mt-10 py-6 lg:py-10 xl:py-16 px-4 lg:px-6 xl:px-12 bg-white">
-      <div className="site-container">
-
-        {/* ── MOBILE layout ── */}
-        <div className="flex flex-col gap-5 sm:hidden">
-          <InfoHeader mobile />
-          <div className="rounded-2xl overflow-hidden cursor-zoom-in relative" style={{ aspectRatio: "1/1", maxHeight: 320 }} onClick={() => setLightboxOpen(true)}>
-            <Image src={activeImg} alt={product.name} width={700} height={700} className="w-full h-full object-contain p-8" />
-            {product.badge && (
-              <span className="absolute top-3 right-3 inline-flex text-sm font-normal text-white px-3 py-1 rounded-lg tracking-widest" style={{ background: "#1a1a1a" }}>{product.badge}</span>
-            )}
-            <div className="absolute bottom-3 right-3 bg-white/80 rounded-full p-1.5 pointer-events-none">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-                <line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" />
-              </svg>
-            </div>
+        {/* ── Editorial ── */}
+        <div className="relative mt-16 grid grid-cols-1 sm:grid-cols-[1fr_minmax(320px,0.82fr)]" style={{ background: "#171717" }}>
+          <div className="relative min-h-45 sm:min-h-0" style={{ background: "#202020" }}>
+            <Image src={product.videoUrl ? "/images/campaign/product-glare-v2.png" : "/images/campaign/product-glare-v2.png"} alt="" fill className="object-cover" />
           </div>
-          <div className="flex gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-            {allImages.map((img, i) => (
-              <button key={i} onClick={() => setSelectedThumb(i)}
-                className="rounded-xl border-2 overflow-hidden shrink-0"
-                style={{ width: 90, height: 90, borderColor: selectedThumb === i ? "#1a1a1a" : "#e0e0e0", background: "#f5f5f5" }}>
-                <Image src={img} alt="" width={90} height={90} className="w-full h-full object-contain" />
-              </button>
-            ))}
-          </div>
-          <InfoBody mobile />
-        </div>
-
-        {/* ── TABLET layout ── */}
-        <div className="hidden sm:grid lg:hidden! gap-6 items-start" style={{ gridTemplateColumns: "55fr 45fr" }} dir="ltr">
-          <div className="flex flex-col gap-3">
-            <div className="rounded-2xl overflow-hidden cursor-zoom-in relative" style={{ aspectRatio: "4/3" }} onClick={() => setLightboxOpen(true)}>
-              <Image src={activeImg} alt={product.name} width={700} height={700} className="w-full h-full object-contain p-10" />
-              <div className="absolute bottom-3 right-3 bg-white/80 rounded-full p-1.5 pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-                  <line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" />
-                </svg>
-              </div>
-            </div>
-            <div className="flex gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-              {allImages.map((img, i) => (
-                <button key={i} onClick={() => setSelectedThumb(i)}
-                  className="rounded-xl border-2 overflow-hidden shrink-0"
-                  style={{ width: 64, height: 64, borderColor: selectedThumb === i ? "#1a1a1a" : "#e0e0e0", background: "#f5f5f5" }}>
-                  <Image src={img} alt="" width={64} height={64} className="w-full h-full object-contain" />
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col gap-4" dir="rtl">
-            <InfoHeader />
-            <InfoBody />
+          <div dir="rtl" className="flex flex-col items-start justify-center gap-4 p-8 text-right sm:p-12" style={{ color: "#f5f1e8" }}>
+            <span className="w-max border px-3 py-1.5 text-sm tracking-[0.1em]" style={{ borderColor: "rgba(247,242,232,.62)", background: "#171717" }}>
+              ביצועים בלי רעש
+            </span>
+            <h2 className="w-full text-[clamp(2.4rem,5vw,4rem)] leading-[0.95] font-black">
+              לראות את הדרך <span style={{ color: "#f7f2e8" }}>כמו שצריך</span>
+            </h2>
+            <p className="max-w-[36ch] text-base" style={{ color: "#f7f2e8" }}>
+              עדשה איכותית מסננת השתקפויות חזקות ושומרת על תמונה חדה, נקייה ונוחה יותר לאורך היום.
+            </p>
           </div>
         </div>
 
-        {/* ── DESKTOP layout ── */}
-        <div className="hidden lg:grid gap-6 xl:gap-12 items-start mx-auto" style={{ gridTemplateColumns: "55fr 45fr", maxWidth: 1500 }} dir="ltr">
-          <div className="flex gap-2 xl:gap-3">
-            <div className="flex flex-col gap-2 shrink-0">
-              {allImages.map((img, i) => (
-                <button key={i} onClick={() => setSelectedThumb(i)}
-                  className="rounded-xl border-2 overflow-hidden shrink-0"
-                  style={{ width: 160, height: 120, borderColor: selectedThumb === i ? "#9ca3af" : "#e0e0e0", background: "#ffffff" }}>
-                  <Image src={img} alt={`${product.name} ${i + 1}`} width={200} height={200} className="w-full h-full object-contain" />
-                </button>
-              ))}
-            </div>
-            <div className="flex-1 rounded-3xl overflow-hidden flex items-center justify-center cursor-zoom-in relative border" style={{ aspectRatio: "4/3", borderColor: "#e0e0e0" }} onClick={() => setLightboxOpen(true)}>
-              <Image src={activeImg} alt={product.name} width={700} height={700} className="w-full h-full object-contain" />
-            </div>
-          </div>
-          <div className="flex flex-col gap-5" dir="rtl">
-            <InfoHeader />
-            <InfoBody />
-          </div>
-        </div>
-
-      </div>
-
-      <div className="flex flex-col sm:contents">
-
-      {/* Trust bar */}
-      <div className="order-3 sm:order-none -mx-4 lg:-mx-6 xl:-mx-12 mt-10 py-10 bg-black" dir="rtl">
-        <div className="site-container grid grid-cols-1 gap-y-10 gap-x-4 sm:grid-cols-4 sm:divide-x sm:divide-white/15">
-          {[
-            { title: "7 שכבות", sub: "עדשות TAC בעלות 7 שכבות הגנה. קלות, עמידות, ראייה חדה.", icon: "/icn/layers.png" },
-            { title: "UV 400", sub: "הגנה מלאה מקרני השמש, שמירה על הראייה ומניעת עייפות עיניים.", icon: "/icn/sun.png" },
-            { title: "POLARIZED", sub: "סינון קרני אור חזק. לנהיגה, לספורט, לבילוי בטבע.", icon: "/icn/waves.png" },
-            { title: "PC FRAME", sub: "מסגרת פוליקרבונט קלה וגמישה. עמידה בחום ובשברים.", icon: "/icn/wshield.png" },
-          ].map(({ title, sub, icon }) => (
-            <div key={title} className="flex flex-col items-center gap-3 px-4 text-center">
-              <Image src={icon} alt="" width={44} height={44} className={`h-11 w-11 object-contain${icon.includes("wshield") ? "" : " invert"}`} />
-              <span className="text-xl font-semibold text-white">{title}</span>
-              <span className="mx-auto max-w-[220px] text-sm sm:text-base leading-relaxed text-gray-400">{sub}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Why choose section */}
-      <div className="hidden sm:block order-2 sm:order-none site-container mt-16 mb-8" dir="rtl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div className="flex flex-col gap-10">
-            <h2 className="text-xl lg:text-3xl font-semibold text-black">למה לבחור ב-{product.name}?</h2>
-            {product.description && (
-              <p className="text-base lg:text-lg text-black leading-relaxed">{product.description}</p>
-            )}
-            {fullFeatures.length > 0 && (
-              <ul className="flex flex-col gap-5">
-                {fullFeatures.map((f) => {
-                  const [title, subtitle] = f.split("::");
-                  return (
-                    <li key={f} className="flex items-start gap-3">
-                      <div className="mt-0.5 shrink-0 w-7 h-7 rounded-full flex items-center justify-center" style={{ background: "#f0f0f0" }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                      </div>
-                      <div className="flex flex-col gap-0.5">
-                        <span className="text-lg lg:text-xl font-semibold text-gray-900" style={{ letterSpacing: "0.02em" }}>{title.trim()}</span>
-                        {subtitle && <span className="text-base lg:text-lg text-gray-500" style={{ letterSpacing: "0.02em" }}>{subtitle.trim()}</span>}
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
-
-          <div className="hidden sm:block relative rounded-3xl overflow-hidden bg-gray-900 w-full mx-auto" style={{ aspectRatio: product.videoUrl ? "16 / 9" : "517 / 354", maxWidth: 600 }}>
-            {product.videoUrl ? (
-              (() => {
-                const ytMatch = product.videoUrl!.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-                if (ytMatch) {
-                  return (
-                    <iframe
-                      src={`https://www.youtube.com/embed/${ytMatch[1]}?rel=0`}
-                      className="absolute inset-0 w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  );
-                }
-                return <video src={product.videoUrl!} controls className="absolute inset-0 w-full h-full object-cover" />;
-              })()
-            ) : (
-              <Image src="/images/productwhyimage.jpg" alt="" fill className="object-contain" />
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs section */}
-      <div className="order-1 sm:order-none sm:contents">
+        {/* ── Specs accordion ── */}
         <ProductTabs
           specsRaw={product.specsRaw ?? null}
           inTheBox={product.inTheBox ?? null}
           usageInstructions={product.usageInstructions ?? null}
           warrantyInfo={product.warrantyInfo ?? null}
         />
-      </div>
 
-      {/* Usage occasions — mobile only */}
-      <div className="order-2 sm:hidden site-container py-6" dir="rtl">
-        <div className="grid grid-cols-4 gap-4">
-          {[
-            { label: "נהיגה", icon: "/icn/car.png" },
-            { label: "ספורט", icon: "/icn/running.png" },
-            { label: "טיולים", icon: "/icn/mountain.png" },
-            { label: "יומיומי", icon: "/icn/calender.png" },
-          ].map((o) => (
-            <div key={o.label} className="flex flex-col items-center gap-2 text-center">
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border" style={{ borderColor: "#e0e0e0" }}>
-                <Image src={o.icon} alt="" width={30} height={30} className="w-[30px] h-[30px] object-contain" />
-              </span>
-              <span className="text-xs font-medium text-black">{o.label}</span>
-            </div>
-          ))}
+        {/* ── Second pair promo ── */}
+        <div dir="ltr" className="relative mt-10 grid grid-cols-1 overflow-hidden border sm:grid-cols-[1.2fr_minmax(320px,0.8fr)]" style={{ background: PAPER_RAISED, borderColor: LINE, borderTop: "3px solid #d9b538" }}>
+          <div className="relative order-2 min-h-55 sm:order-1 sm:min-h-75" style={{ background: "#ebe6dc" }}>
+            <Image src="/images/campaign/second-pair-campaign-desktop-v4.png" alt="משקפי POLARIZED-X בקומפוזיציית מבצע" fill className="object-cover" />
+          </div>
+          <div dir="rtl" className="order-1 flex flex-col items-start justify-center gap-2 p-6 text-right sm:order-2 sm:p-9">
+            <span dir="ltr" className="w-max text-sm font-black tracking-[0.12em]" style={{ color: "#705809" }}>PUT AN X ON IT</span>
+            <h2 className="text-[clamp(2rem,3.8vw,2.75rem)] leading-[0.95] font-black" style={{ color: INK }}>
+              זוג שני <strong className="font-black whitespace-nowrap" style={{ color: "#705809" }}>ב-99 ₪</strong>
+            </h2>
+            <p className="max-w-[40ch] text-base leading-snug" style={{ color: INK_SOFT }}>
+              בחרו כל שני דגמים, בכל שילוב, במחיר מבצע אחד.
+            </p>
+            <Link
+              href="/shop"
+              className="mt-2 inline-flex min-h-11.5 items-center gap-2 border px-4 text-base font-bold text-[#11110f] transition-colors hover:bg-[#11110f] hover:text-[#fbf8f2]"
+              style={{ borderColor: INK }}
+            >
+              <span>לבחירת שני זוגות</span>
+              <span aria-hidden>←</span>
+            </Link>
+          </div>
         </div>
-      </div>
 
-      </div>
-
-      {/* Second pair promo — mobile only, after trust bar, before reviews */}
-      <div className="sm:hidden -mx-4">
-        <ProductSecondPair />
+        {/* ── Related products ── */}
+        {relatedProducts.length > 0 && <RelatedProducts products={relatedProducts} />}
       </div>
 
       {/* Reviews section */}
@@ -392,9 +327,6 @@ export default function ProductDetail({ product, relatedProducts = [], reviews =
 
       {/* FAQ section */}
       {product.faqRaw && <FAQ faqRaw={product.faqRaw} />}
-
-      {/* Related products slider */}
-      {relatedProducts.length > 0 && <RelatedProducts products={relatedProducts} />}
 
       {/* Lightbox */}
       {lightboxOpen && (
@@ -428,46 +360,45 @@ export default function ProductDetail({ product, relatedProducts = [], reviews =
   );
 }
 
-const TABS = [
-  { label: "מפרט טכני" },
-  { label: "מה בקופסה" },
-  { label: "הוראות שימוש" },
-  { label: "אחריות ושירות" },
+const TAB_META = [
+  {
+    label: "מפרט טכני",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M8 12h32M8 24h32M8 36h32" />
+        <circle cx="18" cy="12" r="3.5" /><circle cx="31" cy="24" r="3.5" /><circle cx="22" cy="36" r="3.5" />
+      </svg>
+    ),
+  },
+  {
+    label: "מה בקופסה",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m24 5.5 17 8.75v19.5L24 42.5 7 33.75v-19.5z" />
+        <path d="m7 14.25 17 8.8 17-8.8M24 23.05V42.5M15.5 9.9l17 8.75" />
+      </svg>
+    ),
+  },
+  {
+    label: "שימוש ותחזוקה",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 32.5 27.5 14l10 10L19 42.5H9z" />
+        <path d="m24 17.5 10 10M35.5 5v7M32 8.5h7M12.5 8v5M10 10.5h5" />
+      </svg>
+    ),
+  },
+  {
+    label: "אחריות ושירות",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 25v-3C9 13.7 15.7 7 24 7s15 6.7 15 15v3" />
+        <path d="M9 24h5v12H9a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3ZM39 24h-5v12h5a3 3 0 0 0 3-3v-6a3 3 0 0 0-3-3Z" />
+        <path d="M34 36c-1.8 3.3-5.1 5-10 5h-2" />
+      </svg>
+    ),
+  },
 ];
-
-const TAB_ICONS = ["/icn/control.png", "/icn/box.png", "/icn/document.png", "/icn/cmshield.png"];
-
-function TabIcon({ index, active }: { index: number; active: boolean }) {
-  return (
-    <Image
-      src={TAB_ICONS[index]}
-      alt=""
-      width={22}
-      height={22}
-      className="w-[22px] h-[22px] object-contain"
-      style={{ opacity: active ? 1 : 0.45 }}
-    />
-  );
-}
-
-function StarInput({ value, onChange }: { value: number; onChange: (n: number) => void }) {
-  const [hover, setHover] = useState(0);
-  return (
-    <div className="flex gap-1">
-      {[1, 2, 3, 4, 5].map((n) => (
-        <button key={n} type="button"
-          onMouseEnter={() => setHover(n)} onMouseLeave={() => setHover(0)}
-          onClick={() => onChange(n)}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
-            fill={(hover || value) >= n ? "#f59e0b" : "none"}
-            stroke="#f59e0b" strokeWidth="1.5">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-          </svg>
-        </button>
-      ))}
-    </div>
-  );
-}
 
 function ProductTabs({ specsRaw, inTheBox, usageInstructions, warrantyInfo }: {
   specsRaw: string | null;
@@ -475,113 +406,47 @@ function ProductTabs({ specsRaw, inTheBox, usageInstructions, warrantyInfo }: {
   usageInstructions: string | null;
   warrantyInfo: string | null;
 }) {
-  const [activeTab, setActiveTab] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollStart, setCanScrollStart] = useState(false);
-  const [canScrollEnd, setCanScrollEnd] = useState(false);
-
-  const updateScrollHints = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    const scrolled = Math.abs(el.scrollLeft);
-    setCanScrollStart(scrolled > 4);
-    setCanScrollEnd(scrolled < maxScroll - 4);
-  };
-
-  useEffect(() => {
-    updateScrollHints();
-    window.addEventListener("resize", updateScrollHints);
-    return () => window.removeEventListener("resize", updateScrollHints);
-  }, []);
-
   const parsedSpecs = specsRaw
     ? specsRaw.split("\n").filter(Boolean).map((line) => line.split("|").map((s) => s.trim()))
     : [];
 
-  const renderTabContent = (i: number) => {
-    if (i === 0) {
-      const itemsPerCol = Math.ceil(parsedSpecs.length / 3);
-      const cols = [0, 1, 2].map((c) => parsedSpecs.slice(c * itemsPerCol, (c + 1) * itemsPerCol));
-      return (
-        <div className="rounded-2xl p-6 lg:p-8 mb-8" style={{ background: "#f5f5f7" }}>
-          <div className="flex items-center justify-start gap-3 mb-6">
-            <Image src="/icn/control.png" alt="" width={28} height={28} className="w-7 h-7 object-contain" />
-            <h3 className="text-lg sm:text-2xl lg:text-3xl font-bold text-black">מפרט טכני מלא</h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10">
-            {cols.map((col, colIdx) => (
-              <div key={colIdx} className="flex flex-col">
-                {col.map(([label, value], rowIdx) => (
-                  <div key={rowIdx} className="flex items-center justify-between py-4 px-4 border-b border-gray-400">
-                    <div className="flex items-center gap-2 shrink-0">
-                      <Image
-                        src={SPEC_ICONS[label] ?? "/icn/productPage/icon1.png"}
-                        alt=""
-                        width={16}
-                        height={16}
-                        className="w-4 h-4 object-contain"
-                      />
-                      <span className="text-xs sm:text-lg text-gray-400" style={{ letterSpacing: "0.05em" }}>{label}</span>
-                    </div>
-                    <span className="text-sm sm:text-base lg:text-xl font-normal text-black text-left" style={{ letterSpacing: "0.03em" }}>{value}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (i === 1) return <p className="text-sm sm:text-lg text-gray-600 whitespace-pre-line">{inTheBox || 'תוכן "מה בקופסה" יוסף בקרוב.'}</p>;
-    if (i === 2) return <p className="text-sm sm:text-lg text-gray-600 whitespace-pre-line">{usageInstructions || "הוראות שימוש יוספו בקרוב."}</p>;
-    return <p className="text-sm sm:text-lg text-gray-600 whitespace-pre-line">{warrantyInfo || "מדיניות האחריות והשירות תוסף בקרוב."}</p>;
-  };
-
-  return (
-    <div className="site-container mt-16 mb-8" dir="rtl">
-      {/* ── Mobile: accordion ── */}
-      <div className="sm:hidden">
-        {TABS.map((tab, i) => (
-          <div key={tab.label} className="border-b" style={{ borderColor: "#e5e5e5" }}>
-            <button
-              onClick={() => setActiveTab(activeTab === i ? -1 : i)}
-              className="w-full flex items-center justify-between gap-3 py-4"
-            >
-              <span className="text-lg font-light leading-none text-gray-400">{activeTab === i ? "−" : "+"}</span>
-              <span className="flex-1 text-right text-base font-medium text-black">{tab.label}</span>
-            </button>
-            {activeTab === i && <div className="pb-5">{renderTabContent(i)}</div>}
+  const content = [
+    parsedSpecs.length > 0 ? (
+      <dl className="grid gap-2">
+        {parsedSpecs.map(([label, value], i) => (
+          <div key={i} className="flex items-center justify-between gap-4 border-b pb-1.5" style={{ borderColor: LINE }}>
+            <dt className="flex items-center gap-2 font-black" style={{ color: INK }}>
+              <Image src={SPEC_ICONS[label] ?? "/icn/productPage/icon1.png"} alt="" width={16} height={16} className="h-4 w-4 object-contain" />
+              {label}
+            </dt>
+            <dd className="text-left" style={{ color: INK_SOFT }}>{value}</dd>
           </div>
         ))}
-      </div>
+      </dl>
+    ) : <p style={{ color: INK_SOFT }}>מפרט טכני יתווסף בקרוב.</p>,
+    <p key="box" className="whitespace-pre-line" style={{ color: INK_SOFT }}>{inTheBox || 'תוכן "מה בקופסה" יוסף בקרוב.'}</p>,
+    <p key="usage" className="whitespace-pre-line" style={{ color: INK_SOFT }}>{usageInstructions || "הוראות שימוש יוספו בקרוב."}</p>,
+    <p key="warranty" className="whitespace-pre-line" style={{ color: INK_SOFT }}>{warrantyInfo || "מדיניות האחריות והשירות תוסף בקרוב."}</p>,
+  ];
 
-      {/* ── Tablet/Desktop: tab strip ── */}
-      <div className="hidden sm:block">
-        <div className="relative border-b" style={{ borderColor: "#e5e5e5" }}>
-          <div
-            ref={scrollRef}
-            onScroll={updateScrollHints}
-            className="flex justify-center gap-8 lg:gap-12 overflow-x-auto px-1"
-            style={{ scrollbarWidth: "none" }}
-          >
-            {TABS.map((tab, i) => (
-              <button key={tab.label} onClick={() => setActiveTab(i)}
-                className="flex items-center gap-1.5 py-3 text-base lg:text-lg font-normal transition-colors relative whitespace-nowrap shrink-0"
-                style={{ letterSpacing: "0.03em", color: activeTab === i ? "#1a1a1a" : "#555" }}>
-                <TabIcon index={i} active={activeTab === i} />
-                {tab.label}
-                {activeTab === i && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-black rounded-full" />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="py-8">
-          {renderTabContent(activeTab === -1 ? 0 : activeTab)}
-        </div>
+  return (
+    <div dir="rtl" className="mt-14 border-y" style={{ borderColor: LINE }}>
+      <h2 className="border-b py-6 text-[clamp(2.2rem,5vw,3.5rem)] font-black" style={{ borderColor: LINE, color: INK }}>
+        כל מה שצריך לדעת
+      </h2>
+      <div className="grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4" style={{ background: LINE }}>
+        {TAB_META.map((tab, i) => (
+          <details key={tab.label} open={i === 0} className="min-w-0" style={{ background: PAPER_RAISED }}>
+            <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-2.5 px-4 py-3 font-black" style={{ color: INK }}>
+              <span className="flex items-center gap-3 min-w-0">
+                <span className="grid h-8.5 w-8.5 shrink-0 place-items-center" style={{ color: "#171717" }}>{tab.icon}</span>
+                <span>{tab.label}</span>
+              </span>
+              <span aria-hidden className="text-lg">＋</span>
+            </summary>
+            <div className="px-4 pb-5 text-sm leading-relaxed">{content[i]}</div>
+          </details>
+        ))}
       </div>
     </div>
   );
@@ -610,99 +475,101 @@ function RelatedProducts({ products }: { products: Product[] }) {
   }, [emblaApi, onSelect]);
 
   return (
-    <div className="site-container mt-16 mb-16" dir="rtl">
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-3xl font-bold text-black text-center flex-1">לקוחות שקנו את זה אהבו גם</h2>
+    <div dir="rtl" className="mt-16 border-t pt-8" style={{ borderColor: LINE }}>
+      <div className="mb-5 flex items-end justify-between gap-6">
+        <div>
+          <span dir="ltr" className="block text-right text-sm font-black tracking-[0.1em]" style={{ color: "#705809" }}>MORE TO EXPLORE</span>
+          <h2 className="text-[clamp(2rem,4.5vw,3.4rem)] font-black" style={{ color: INK }}>אולי תאהבו גם</h2>
+          <p className="mt-1.5 font-bold" style={{ color: INK_SOFT }}>עוד דגמים מהקולקציה, עם אותה הגנת POLARIZED.</p>
+        </div>
         {products.length > 1 && (
-          <div className="flex gap-2">
-            <button onClick={() => emblaApi?.scrollPrev()}
-              disabled={!canPrev}
-              className="w-11 h-11 rounded-full flex items-center justify-center transition-colors disabled:opacity-30 hover:opacity-80"
-              style={{ background: "#1a1a1a" }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
-            </button>
-            <button onClick={() => emblaApi?.scrollNext()}
-              disabled={!canNext}
-              className="w-11 h-11 rounded-full flex items-center justify-center transition-colors disabled:opacity-30 hover:opacity-80"
-              style={{ background: "#1a1a1a" }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-            </button>
+          <div dir="ltr" className="hidden gap-2 sm:flex">
+            <button onClick={() => emblaApi?.scrollPrev()} disabled={!canPrev}
+              className="grid h-12 w-12 place-items-center border font-black transition-colors disabled:opacity-30"
+              style={{ borderColor: LINE, background: PAPER_RAISED, color: INK }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = INK; e.currentTarget.style.color = PAPER_RAISED; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = PAPER_RAISED; e.currentTarget.style.color = INK; }}>←</button>
+            <button onClick={() => emblaApi?.scrollNext()} disabled={!canNext}
+              className="grid h-12 w-12 place-items-center border font-black transition-colors disabled:opacity-30"
+              style={{ borderColor: LINE, background: PAPER_RAISED, color: INK }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = INK; e.currentTarget.style.color = PAPER_RAISED; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = PAPER_RAISED; e.currentTarget.style.color = INK; }}>→</button>
           </div>
         )}
       </div>
+
+      {/* Mobile-only: hint that the row scrolls horizontally */}
+      <div className="mb-2.5 flex items-center justify-start gap-1.5 sm:hidden" style={{ color: "#8d6c12" }}>
+        <span className="text-xs font-bold">גלול לצפייה בעוד דגמים</span>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="slider-hint-arrow h-4 w-4"
+        >
+          <path d="M15 6 9 12l6 6" />
+        </svg>
+      </div>
+
       <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
-        <div className="flex -ms-3 justify-center">
-        {products.map((p) => {
-          const reviewCount = p.reviewCount ?? 0;
-          const rating = p.rating ?? 0;
-          return (
-            <div key={p.id} className="related-slide min-w-0 shrink-0 grow-0 px-3">
-            <a href={`/shop/${p.handle || p.id}`}
-              className="border rounded-2xl overflow-hidden hover:shadow-md transition-shadow flex flex-col h-full"
-              style={{ borderColor: "#e5e5e5" }}>
-              <div className="bg-white flex items-center justify-center" style={{ aspectRatio: "4/3" }}>
-                {p.thumbnail ? (
-                  <Image src={p.thumbnail} alt={p.name} width={300} height={300} className="object-contain" style={{ maxWidth: "75%", maxHeight: "75%", width: "auto", height: "auto" }} />
-                ) : (
-                  <div className="w-full h-full bg-gray-100 rounded-xl" />
-                )}
-              </div>
-              <div className="px-4 pb-4 pt-2 flex flex-col gap-2 flex-1 items-start" dir="rtl">
-                <span className="text-base sm:text-xl lg:text-3xl font-bold text-black leading-snug w-full text-center mb-2 sm:mb-6">{p.name}</span>
-                <div className="flex items-center gap-1.5 flex-wrap justify-start">
-                  <div className="flex gap-0.5">
-                    {Array.from({ length: 5 }).map((_, n) => (
-                      <svg key={n} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                        fill={rating > 0 && n < Math.round(rating) ? "#f59e0b" : "#e5e7eb"}
-                        stroke={rating > 0 && n < Math.round(rating) ? "#f59e0b" : "#e5e7eb"} strokeWidth="0.5">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                      </svg>
-                    ))}
-                  </div>
-                  {reviewCount > 0 && <span className="text-xs text-gray-400">({reviewCount})</span>}
-                  {reviewCount === 0 && <span className="text-xs text-gray-400">אין חוות דעת</span>}
+        <div className="flex -ms-1.5">
+          {products.map((p) => (
+            <div key={p.id} className="related-slide min-w-0 shrink-0 grow-0 px-1.5">
+              <a href={`/shop/${p.handle || p.id}`} className="group flex h-full flex-col border" style={{ background: PAPER_RAISED, borderColor: LINE }}>
+                <div className="relative aspect-square overflow-hidden" style={{ background: "#fff" }}>
+                  {p.thumbnail ? (
+                    <Image src={p.thumbnail} alt={p.name} fill className="object-contain p-[6%] transition-transform duration-300 ease-out group-hover:scale-110" />
+                  ) : (
+                    <div className="h-full w-full" style={{ background: "#f0ece2" }} />
+                  )}
                 </div>
-                {p.color && (
-                  <span className="text-sm sm:text-base lg:text-lg text-gray-500 leading-snug">צבע: {p.color}</span>
-                )}
-                <span className="text-lg sm:text-xl lg:text-2xl font-normal text-black mt-auto" style={{ letterSpacing: "0.04em" }}>{p.price} ₪</span>
-              </div>
-              <div className="px-4 pb-4">
-                <button className="w-full py-2.5 rounded-xl text-white text-sm font-semibold" style={{ background: "#1a1a1a" }}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    addItem({
-                      id: p.variantId || p.id,
-                      name: p.name,
-                      price: p.price,
-                      variantId: p.variantId || p.id,
-                      image: p.thumbnail ?? undefined,
-                      description: p.description,
-                      material: p.material,
-                    });
-                  }}>
-                  הוסף לסל
-                </button>
-              </div>
-            </a>
+                <div className="flex items-baseline justify-between gap-3 p-4">
+                  <b className="text-lg font-black" style={{ color: INK }}>{p.name}</b>
+                  <span className="whitespace-nowrap font-black" style={{ color: INK }}>{p.price} ₪</span>
+                </div>
+              </a>
             </div>
-          );
-        })}
+          ))}
         </div>
       </div>
+
+      {/* Mobile-only: dot pagination showing position in the slider */}
       {scrollSnaps.length > 1 && (
-        <div className="mt-6 flex justify-center gap-2">
+        <div className="mt-4 flex justify-center gap-2">
           {scrollSnaps.map((_, i) => (
             <button
               key={i}
               type="button"
               aria-label={`עבור למוצר ${i + 1}`}
               onClick={() => emblaApi?.scrollTo(i)}
-              className={`h-2 rounded-full transition-all ${i === selectedIndex ? "w-6 bg-black" : "w-2 bg-black/25"}`}
+              className="h-2 rounded-full transition-all"
+              style={{ width: i === selectedIndex ? 24 : 8, background: i === selectedIndex ? INK : "#d9cfc0" }}
             />
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+function StarInput({ value, onChange }: { value: number; onChange: (n: number) => void }) {
+  const [hover, setHover] = useState(0);
+  return (
+    <div className="flex gap-1">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <button key={n} type="button"
+          onMouseEnter={() => setHover(n)} onMouseLeave={() => setHover(0)}
+          onClick={() => onChange(n)}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+            fill={(hover || value) >= n ? "#d9b538" : "none"}
+            stroke="#d9b538" strokeWidth="1.5">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+        </button>
+      ))}
     </div>
   );
 }
@@ -725,7 +592,7 @@ function Reviews({ reviews, rating, reviewCount, productId }: { reviews: Review[
     <div className="flex gap-0.5">
       {Array.from({ length: 5 }).map((_, n) => (
         <svg key={n} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24"
-          fill={n < r ? "#f59e0b" : "#e5e7eb"} stroke={n < r ? "#f59e0b" : "#e5e7eb"} strokeWidth="0.5">
+          fill={n < r ? "#d9b538" : "#e5e0d3"} stroke={n < r ? "#d9b538" : "#e5e0d3"} strokeWidth="0.5">
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
       ))}
@@ -735,44 +602,35 @@ function Reviews({ reviews, rating, reviewCount, productId }: { reviews: Review[
   if (reviews.length === 0 && !rating) return null;
 
   return (
-    <div className="site-container mt-16" dir="rtl">
+    <div className="site-container mt-16 border-t pt-10" style={{ maxWidth: 1260, borderColor: LINE }} dir="rtl">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" strokeWidth="0.5">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-          </svg>
-          <h2 className="text-2xl lg:text-3xl font-bold text-black">חוות דעת לקוחות</h2>
-        </div>
+        <h2 className="text-[clamp(1.75rem,3.5vw,2.5rem)] font-black" style={{ color: INK }}>חוות דעת לקוחות</h2>
         {reviews.length > perPage && (
           <div className="flex gap-2">
             <button onClick={() => setSlideStart((s) => s + perPage)} disabled={!canNext}
-              className="w-9 h-9 rounded-full flex items-center justify-center transition-colors disabled:opacity-30"
-              style={{ background: "#1a1a1a" }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
-            </button>
+              className="grid h-11 w-11 place-items-center border transition-colors disabled:opacity-30"
+              style={{ borderColor: LINE, background: PAPER_RAISED, color: INK }}>←</button>
             <button onClick={() => setSlideStart((s) => s - perPage)} disabled={!canPrev}
-              className="w-9 h-9 rounded-full flex items-center justify-center transition-colors disabled:opacity-30"
-              style={{ background: "#1a1a1a" }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-            </button>
+              className="grid h-11 w-11 place-items-center border transition-colors disabled:opacity-30"
+              style={{ borderColor: LINE, background: PAPER_RAISED, color: INK }}>→</button>
           </div>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-stretch">
-        <div className="border rounded-2xl p-6 flex flex-col items-center justify-center gap-4 bg-white" style={{ borderColor: "#e5e5e5" }}>
+      <div className="grid grid-cols-1 gap-px md:grid-cols-2 xl:grid-cols-4" style={{ background: LINE }}>
+        <div className="flex flex-col items-center justify-center gap-3 p-6" style={{ background: PAPER_RAISED }}>
           {rating ? (
             <>
-              <span className="text-6xl font-bold text-black leading-none">{rating}</span>
-              <Stars r={Math.round(rating)} size={24} />
-              <span className="text-sm text-gray-400 text-center">מבוסס על {displayCount} חוות דעת</span>
+              <span className="text-5xl font-black" style={{ color: INK }}>{rating}</span>
+              <Stars r={Math.round(rating)} size={22} />
+              <span className="text-center text-sm" style={{ color: INK_SOFT }}>מבוסס על {displayCount} חוות דעת</span>
             </>
           ) : (
-            <span className="text-sm text-gray-500 text-center">אין חוות דעת עדיין</span>
+            <span className="text-center text-sm" style={{ color: INK_SOFT }}>אין חוות דעת עדיין</span>
           )}
           <button onClick={() => setShowReview(true)}
-            className="w-full py-2.5 rounded-xl border text-sm font-semibold transition-colors hover:bg-gray-50 text-black"
-            style={{ borderColor: "#1a1a1a" }}>
+            className="w-full border py-2.5 text-sm font-bold text-[#11110f] transition-colors hover:bg-[#11110f] hover:text-[#fbf8f2]"
+            style={{ borderColor: INK }}>
             כתבו חוות דעת
           </button>
         </div>
@@ -782,65 +640,57 @@ function Reviews({ reviews, rating, reviewCount, productId }: { reviews: Review[
           const avatarColors = ["#f87171", "#60a5fa", "#34d399", "#fbbf24", "#a78bfa", "#f472b6"];
           const avatarBg = avatarColors[i % avatarColors.length];
           return (
-            <div key={r.id} className="border rounded-2xl p-5 flex flex-col gap-3 bg-white min-h-[240px]" style={{ borderColor: "#e5e5e5" }}>
+            <div key={r.id} className="flex min-h-60 flex-col gap-3 p-5" style={{ background: PAPER_RAISED }}>
               <div className="flex items-center justify-between gap-2">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-base font-bold text-black">{r.name}</span>
+                  <span className="text-base font-bold" style={{ color: INK }}>{r.name}</span>
                   <div className="flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                     <span className="text-xs font-medium" style={{ color: "#16a34a" }}>קנה מאומת</span>
                   </div>
                 </div>
-                <div className="w-11 h-11 rounded-full flex items-center justify-center shrink-0 text-white font-bold text-base" style={{ background: avatarBg }}>
+                <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-base font-bold text-white" style={{ background: avatarBg }}>
                   {r.name.charAt(0)}
                 </div>
               </div>
               <Stars r={r.rating} />
-              <p className="text-sm text-gray-700 leading-relaxed flex-1">{r.text}</p>
-              <span className="text-xs text-gray-400 mt-auto">{date}</span>
+              <p className="flex-1 text-sm leading-relaxed" style={{ color: INK_SOFT }}>{r.text}</p>
+              <span className="mt-auto text-xs" style={{ color: INK_SOFT }}>{date}</span>
             </div>
           );
         })}
       </div>
 
-      {displayCount > 3 && (
-        <div className="text-center mt-6">
-          <span className="text-base font-semibold cursor-pointer hover:underline text-black">
-            צפה בכל {displayCount} חוות הדעת
-          </span>
-        </div>
-      )}
-
       {showReview && createPortal(
         <div className="fixed inset-0 flex items-center justify-center bg-black/60" style={{ zIndex: 9999 }} onClick={() => setShowReview(false)}>
-          <div className="bg-white rounded-3xl p-8 w-full max-w-lg flex flex-col gap-5" style={{ zIndex: 10000 }} onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-lg flex flex-col gap-5 p-8" style={{ zIndex: 10000, background: PAPER_RAISED }} onClick={(e) => e.stopPropagation()}>
             {reviewSent ? (
               <div className="text-center py-8">
                 <div className="text-5xl mb-4">✅</div>
-                <h3 className="text-2xl font-bold text-black mb-2">תודה על חוות דעתך!</h3>
-                <p className="text-gray-500">חוות הדעת שלך התקבלה בהצלחה.</p>
+                <h3 className="text-2xl font-bold mb-2" style={{ color: INK }}>תודה על חוות דעתך!</h3>
+                <p style={{ color: INK_SOFT }}>חוות הדעת שלך התקבלה בהצלחה.</p>
                 <button onClick={() => { setShowReview(false); setReviewSent(false); setUserRating(0); setReviewName(""); setReviewText(""); }}
-                  className="mt-6 px-8 py-3 rounded-xl text-white font-bold" style={{ background: "#1a1a1a" }}>
+                  className="mt-6 px-8 py-3 font-bold" style={{ background: INK, color: PAPER_RAISED }}>
                   סגור
                 </button>
               </div>
             ) : (
               <>
                 <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-bold text-black">כתבו חוות דעת</h3>
-                  <button onClick={() => setShowReview(false)} className="text-3xl text-gray-400 hover:text-black leading-none">✕</button>
+                  <h3 className="text-2xl font-bold" style={{ color: INK }}>כתבו חוות דעת</h3>
+                  <button onClick={() => setShowReview(false)} className="text-3xl leading-none" style={{ color: INK_SOFT }}>✕</button>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <label className="text-base font-semibold">דירוג</label>
+                  <label className="text-base font-semibold" style={{ color: INK }}>דירוג</label>
                   <StarInput value={userRating} onChange={setUserRating} />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <label className="text-base font-semibold">שם</label>
-                  <input value={reviewName} onChange={(e) => setReviewName(e.target.value)} className="border rounded-xl px-4 py-3 text-base text-black focus:outline-none focus:border-black" style={{ borderColor: "#d0d0d0" }} placeholder="השם שלך" />
+                  <label className="text-base font-semibold" style={{ color: INK }}>שם</label>
+                  <input value={reviewName} onChange={(e) => setReviewName(e.target.value)} className="border px-4 py-3 text-base focus:outline-none" style={{ borderColor: LINE, color: INK, background: "#fff" }} placeholder="השם שלך" />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <label className="text-base font-semibold">חוות דעת</label>
-                  <textarea rows={4} value={reviewText} onChange={(e) => setReviewText(e.target.value)} className="border rounded-xl px-4 py-3 text-base text-black focus:outline-none focus:border-black resize-none" style={{ borderColor: "#d0d0d0" }} placeholder="ספר לנו על החוויה שלך..." />
+                  <label className="text-base font-semibold" style={{ color: INK }}>חוות דעת</label>
+                  <textarea rows={4} value={reviewText} onChange={(e) => setReviewText(e.target.value)} className="border px-4 py-3 text-base resize-none focus:outline-none" style={{ borderColor: LINE, color: INK, background: "#fff" }} placeholder="ספר לנו על החוויה שלך..." />
                 </div>
                 <button onClick={async () => {
                   if (!userRating || !reviewName.trim() || !reviewText.trim()) return;
@@ -856,8 +706,8 @@ function Reviews({ reviews, rating, reviewCount, productId }: { reviews: Review[
                     alert("אירעה שגיאה בשליחת חוות הדעת. נסה שוב מאוחר יותר.");
                   } finally { setReviewSubmitting(false); }
                 }} disabled={reviewSubmitting || !userRating || !reviewName.trim() || !reviewText.trim()}
-                  className="py-4 rounded-xl text-white text-lg font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
-                  style={{ background: "#1a1a1a" }}>
+                  className="py-4 text-lg font-bold transition-opacity hover:opacity-90 disabled:opacity-50"
+                  style={{ background: INK, color: PAPER_RAISED }}>
                   {reviewSubmitting ? "שולח..." : "שלח חוות דעת"}
                 </button>
               </>
@@ -880,24 +730,24 @@ function FAQ({ faqRaw }: { faqRaw: string }) {
   if (items.length === 0) return null;
 
   return (
-    <div className="mt-16 mb-12 -mx-4 lg:-mx-6 xl:-mx-12" style={{ background: "#111", padding: "60px 0" }} dir="rtl">
-      <div className="site-container px-8 lg:px-10 xl:px-12">
-        <h2 className="text-3xl font-bold text-white mb-8 text-center">שאלות ותשובות</h2>
-        <div className="flex flex-col gap-3 max-w-3xl mx-auto">
+    <div className="mt-16 py-12" style={{ background: "#171717" }} dir="rtl">
+      <div className="site-container px-4 sm:px-6 lg:px-10" style={{ maxWidth: 1260 }}>
+        <h2 className="mb-8 text-center text-3xl font-black text-white">שאלות ותשובות</h2>
+        <div className="flex flex-col gap-px max-w-3xl mx-auto" style={{ background: "#2a2a2a" }}>
           {items.map((item, i) => (
-            <div key={i} className="rounded-2xl overflow-hidden border" style={{ borderColor: "#ffffff", background: "#1a1a1a" }}>
+            <div key={i} style={{ background: "#171717" }}>
               <button
-                className="w-full flex items-center justify-between gap-4 px-6 py-4 sm:py-7 text-right"
+                className="w-full flex items-center justify-between gap-4 px-6 py-4 sm:py-6 text-right"
                 onClick={() => setOpen(open === i ? null : i)}
               >
-                <span className="text-2xl font-light text-white leading-none" style={{ color: "#888" }}>
+                <span className="text-2xl font-light leading-none" style={{ color: "#888" }}>
                   {open === i ? "−" : "+"}
                 </span>
                 <span className="text-sm sm:text-base font-medium text-white flex-1 text-right">{item.q}</span>
               </button>
               {open === i && (
-                <div className="px-6 pb-5 text-base text-gray-400 border-t" style={{ borderColor: "#2a2a2a" }}>
-                  <p className="pt-4 leading-relaxed">{item.a}</p>
+                <div className="px-6 pb-5 text-base text-gray-400">
+                  <p className="leading-relaxed">{item.a}</p>
                 </div>
               )}
             </div>

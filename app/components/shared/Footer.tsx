@@ -5,33 +5,26 @@ import Image from "next/image";
 import Link from "next/link";
 
 const collection = [
-  { label: "BLACK X", href: "/shop/black-x-polarized-sunglasses" },
-  { label: "MULTICOLOR X", href: "/shop/multicolor-x-polarized-sunglasses" },
   { label: "WOOD X", href: "/shop/wood-x-polarized-sunglasses" },
   { label: "WILD X", href: "/shop/wild-x-polarized-sunglasses" },
+  { label: "MULTICOLOR X", href: "/shop/multicolor-x-polarized-sunglasses" },
   { label: "BLUE X", href: "/shop/blue-x-polarized-sunglasses" },
+  { label: "BLACK X", href: "/shop/black-x-polarized-sunglasses" },
   { label: "CLEAR X", href: "/shop/clear-x-polarized-sunglasses" },
 ];
 
 const brand = [
-  { label: "צור קשר", href: "/contact" },
-  { label: "הסיפור B2B", href: "/b2b" },
-  { label: "האיכות", href: "/about" },
-  { label: "קמעונאים", href: "/b2b" },
+  { label: "הסיפור שלנו", href: "/about" },
+  { label: "B2B לבעלי עסקים", href: "/b2b" },
   { label: "שאלות נפוצות", href: "/faq" },
+  { label: "צור קשר", href: "/contact" },
 ];
 
 const service = [
+  { label: "מדיניות משלוחים", href: "/shipping" },
+  { label: "תקנון ותנאי שימוש", href: "/terms-of-service" },
   { label: "מדיניות פרטיות", href: "/privacy" },
   { label: "הצהרת נגישות", href: "/accessibility" },
-  { label: "תקנון ותנאי שימוש", href: "/terms-of-service" },
-  { label: "מדיניות משלוחים", href: "/shipping" },
-];
-
-const trustBadges = [
-  { label: "שירות לקוחות", sub: "זמינות ומענה מקצועי", icon: "/icn/Group84.png" },
-  { label: "משלוח מהיר", sub: "עד 3 ימי עסקים", icon: "/icn/Group82.png" },
-  { label: "אחריות מלאה", sub: "החלפה ורכישה מאובטחת", icon: "/icn/Group83.png" },
 ];
 
 function Newsletter() {
@@ -65,46 +58,51 @@ function Newsletter() {
   }
 
   return (
-    <div className="mt-8 text-center md:mt-0">
-      <p className="text-sm leading-relaxed text-zinc-300">
-        הישאר מעודכן קולקציה חדשה כל שנה.
-        <br />
-        תהיה הראשון לדעת.
+    <div>
+      <h4 className="text-gold mb-1 text-xl font-black">הישארו מעודכנים</h4>
+      <p className="mb-2 leading-relaxed text-zinc-400">
+        קולקציה חדשה כל שנה. היו הראשונים לדעת.
       </p>
-      <div className="mx-auto mt-4 flex max-w-xs flex-col gap-3">
+      <label htmlFor="newsletter-email" className="mb-1 block font-bold text-zinc-200">
+        כתובת אימייל
+      </label>
+      <div className="flex gap-2">
         <input
+          id="newsletter-email"
           type="email"
+          inputMode="email"
+          autoComplete="email"
           placeholder="כתובת אימייל"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           dir="rtl"
-          className="w-full rounded-md border border-white/20 bg-transparent px-4 py-2.5 text-sm text-white outline-none placeholder:text-zinc-500"
+          className="min-h-12 min-w-0 flex-1 border border-zinc-700 bg-black px-3 text-white outline-none placeholder:text-zinc-500 focus-visible:border-gold"
         />
         <button
           type="button"
           onClick={handleSubmit}
           disabled={status === "loading"}
-          className="w-full rounded-md bg-white px-4 py-2.5 text-sm font-medium text-black transition-colors hover:bg-white/90 disabled:opacity-60"
+          className="bg-gold min-h-12 shrink-0 whitespace-nowrap px-5 font-bold text-black transition-colors hover:bg-[#e0bd48] disabled:opacity-60"
         >
           {status === "loading" ? "נרשם..." : "הרשמה"}
         </button>
-        {message && (
-          <p className={`text-xs ${status === "success" ? "text-green-400" : "text-red-400"}`}>{message}</p>
-        )}
       </div>
+      <p className={`mt-2 min-h-[1.3em] font-bold ${status === "success" ? "text-green-400" : status === "error" ? "text-red-400" : "text-zinc-400"}`}>
+        {message}
+      </p>
     </div>
   );
 }
 
 function LinkColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
   return (
-    <div className="text-center">
-      <h3 className="text-sm font-semibold tracking-wide text-white">{title}</h3>
-      <ul className="mt-4 space-y-2.5 text-sm text-zinc-400">
+    <div>
+      <h4 className="text-gold mb-2 text-xl font-black">{title}</h4>
+      <ul className="flex flex-col gap-1.5 text-zinc-400">
         {links.map((l) => (
           <li key={l.label}>
-            <Link href={l.href} className="transition-colors hover:text-white">
+            <Link href={l.href} className="inline-flex min-h-11 items-center transition-colors hover:text-white">
               {l.label}
             </Link>
           </li>
@@ -124,7 +122,7 @@ function ChevronIcon({ open }: { open: boolean }) {
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`h-8 w-8 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+      className={`h-6 w-6 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
     >
       <path d="m6 9 6 6 6-6" />
     </svg>
@@ -139,16 +137,16 @@ function LinkAccordion({ title, links }: { title: string; links: { label: string
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between py-4 text-2xl font-semibold text-white"
+        className="text-gold flex w-full items-center justify-between py-4 text-xl font-black"
       >
         <span>{title}</span>
         <ChevronIcon open={open} />
       </button>
       {open && (
-        <ul className="space-y-2.5 pb-4 text-center text-base text-white">
+        <ul className="flex flex-col gap-1.5 pb-4 text-zinc-300">
           {links.map((l) => (
             <li key={l.label}>
-              <Link href={l.href} className="transition-colors hover:text-white">
+              <Link href={l.href} className="inline-flex min-h-11 items-center transition-colors hover:text-white">
                 {l.label}
               </Link>
             </li>
@@ -159,64 +157,70 @@ function LinkAccordion({ title, links }: { title: string; links: { label: string
   );
 }
 
+function WhatsAppFloat() {
+  return (
+    <a
+      href="https://wa.me/972587991094"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="וואטסאפ"
+      className="fixed bottom-5 left-5 z-90 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-transform hover:scale-107"
+      style={{ background: "#25d366", boxShadow: "0 6px 18px rgba(0,0,0,.45)" }}
+    >
+      <svg viewBox="0 0 32 32" className="h-7.5 w-7.5" fill="#fff">
+        <path d="M16 3C9.4 3 4 8.4 4 15c0 2.6.8 5 2.3 7L4 29l7.2-2.2c1.9 1 4 1.6 6.2 1.6h.6c6.6 0 12-5.4 12-12S22.6 3 16 3zm7 17.2c-.3.8-1.7 1.6-2.4 1.7-.6.1-1.4.1-2.2-.1-.5-.2-1.2-.4-2-.8-3.6-1.5-5.9-5.1-6.1-5.4-.2-.2-1.4-1.9-1.4-3.6s.9-2.5 1.2-2.9c.3-.3.7-.4.9-.4h.7c.2 0 .5-.1.8.6.3.7 1 2.4 1.1 2.6.1.2.1.4 0 .6-.1.2-.2.4-.4.6l-.6.7c-.2.2-.4.4-.2.8.2.3 1 1.6 2.1 2.6 1.4 1.3 2.6 1.7 3 1.9.4.2.6.1.8-.1.2-.2.9-1 1.1-1.4.2-.3.5-.3.8-.2.3.1 2.1 1 2.4 1.2.4.2.6.3.7.4.1.3.1.9-.3 1.7z" />
+      </svg>
+    </a>
+  );
+}
+
 export default function Footer() {
   return (
-    <footer className="bg-black text-white">
-      <div className="site-container flex flex-col px-6 py-10 lg:px-12">
+    <>
+      <footer dir="rtl" className="text-white" style={{ background: "#080808", borderTop: "1px solid #2a2a2a" }}>
+        <div className="site-container px-6 py-10 lg:px-12">
+          <div className="mb-8 text-center md:text-right">
+            <Image src="/logo/logo2w.png" alt="POLARIZED-X" width={220} height={17} className="mx-auto h-4.5 w-auto md:mx-0" />
+          </div>
 
-        {/* Brand row */}
-        <div className="order-3 flex flex-col items-center gap-2 pb-8 text-center md:order-1 md:flex-row md:gap-6 md:text-right">
-          <Image src="/logo/logo2w.png" alt="POLARIZED-X" width={160} height={46} className="h-3 w-auto" />
-          <span className="text-sm text-zinc-400">קלסיקה אמיתית שהולכת איתך.</span>
-        </div>
-
-        <div className="order-4 border-t border-white/10 md:order-2" />
-
-        {/* Columns */}
-        <div className="order-1 py-10 md:order-3 md:grid md:grid-cols-4 md:gap-10">
           {/* Mobile: accordions */}
-          <div dir="rtl" className="md:hidden">
+          <div className="md:hidden">
             <LinkAccordion title="הקולקציה" links={collection} />
             <LinkAccordion title="המותג" links={brand} />
             <LinkAccordion title="שירות" links={service} />
+            <div className="border-t border-white/10 py-6">
+              <h4 className="text-gold mb-2 text-xl font-black">דברו איתנו</h4>
+              <a href="https://wa.me/972587991094" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-zinc-400 transition-colors hover:text-white">
+                וואטסאפ: 058-799-1094
+              </a>
+            </div>
+            <div className="border-t border-white/10 pt-6">
+              <Newsletter />
+            </div>
           </div>
 
-          {/* Desktop: static columns */}
-          <div className="hidden md:contents">
+          {/* Desktop: 5-column grid */}
+          <div className="hidden gap-8 md:grid" style={{ gridTemplateColumns: "1.15fr repeat(4,minmax(0,1fr))" }}>
             <LinkColumn title="הקולקציה" links={collection} />
             <LinkColumn title="המותג" links={brand} />
             <LinkColumn title="שירות" links={service} />
-          </div>
-
-          {/* Newsletter */}
-          <Newsletter />
-        </div>
-
-        <div className="order-2 border-t border-white/10 md:order-4" />
-
-        {/* Trust badges */}
-        <div dir="rtl" className="order-5 grid grid-cols-1 items-center justify-items-center gap-y-8 py-10 text-center sm:grid-cols-3 sm:gap-x-10 sm:gap-y-8 md:gap-x-36 lg:flex lg:flex-row lg:justify-center lg:gap-52">
-          {trustBadges.map((badge) => (
-            <div key={badge.label} className="flex flex-col items-center gap-2 px-2">
-              <Image src={badge.icon} alt={badge.label} width={62} height={62} className="h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16" />
-              <span className="text-base font-semibold text-white sm:text-lg lg:whitespace-nowrap lg:text-2xl">{badge.label}</span>
-              <span className="text-sm font-light text-white sm:text-base lg:whitespace-nowrap lg:text-xl">{badge.sub}</span>
+            <div>
+              <h4 className="text-gold mb-2 text-xl font-black">דברו איתנו</h4>
+              <a href="https://wa.me/972587991094" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-zinc-400 transition-colors hover:text-white">
+                וואטסאפ: 058-799-1094
+              </a>
             </div>
-          ))}
-        </div>
+            <Newsletter />
+          </div>
 
-        <div className="order-6 border-t border-white/10" />
-
-        {/* Bottom bar */}
-        <div className="order-7 flex flex-col items-center gap-5 pt-6 text-xs text-zinc-400 md:items-start">
-          {/* Company info */}
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 md:justify-start">
-            <span>© 2026 POLARIZED-X</span>
-            <span>B2B MARKT LTD יבואנית בלעדית</span>
-             <span>המרכבה 25, חולון</span>
+          {/* Legal bar */}
+          <div className="mt-10 border-t border-white/10 pt-6 text-center text-zinc-400">
+            <p className="mb-2 text-xl font-black text-white">קלאסיקה אמיתית שהולכת איתך.</p>
+            <p className="text-sm">© 2026 POLARIZED-X · B2B MARKT LTD יבואנית בלעדית · המרכבה 25, חולון</p>
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+      <WhatsAppFloat />
+    </>
   );
 }
