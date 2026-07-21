@@ -60,7 +60,8 @@ interface CrmProduct {
 }
 
 function toStoreProduct(p: CrmProduct): StoreProduct {
-  const allImages = p.images?.length ? p.images : p.image ? [p.image] : [];
+  const gallery = p.images ?? [];
+  const allImages = p.image ? [p.image, ...gallery.filter((img) => img !== p.image)] : gallery;
   return {
     id: p.id,
     handle: p.handle,
