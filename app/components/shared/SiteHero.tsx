@@ -1,10 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-/* The promo panel's diagonal gold edge. Kept here so the gold layer and the
-   textured layer above it always slice on the exact same angle. */
-const MOBILE_BLADE = { ["--blade-y" as string]: "16%" };
-
 export default function SiteHero() {
   return (
     <section className="w-full bg-black">
@@ -37,31 +33,6 @@ export default function SiteHero() {
               לחץ לרכישה
             </Link>
             <Image src="/images/hero/glogo.png" alt="POLARIZED-X" width={123} height={16} className="h-4.5 w-auto self-center" />
-          </div>
-        </div>
-
-        {/* Promo band — the blade slices it off the photo above. The band is
-            pulled up over the photo and left transparent, so the wedge above
-            the gold rule reveals the photo rather than flat black. */}
-        <div className="relative -mt-12" style={MOBILE_BLADE}>
-          <div className="hero-blade-m absolute inset-0 bg-gold" />
-          <div className="hero-blade-m-inner relative">
-            <Image
-              src="/images/hero/rbg-wide.jpg"
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-cover object-center select-none pointer-events-none"
-            />
-            <div dir="rtl" className="text-center relative flex flex-col items-center gap-1 px-6 pt-12 pb-7 text-center">
-              <p className="text-center text-2xl font-semibold leading-none text-white">זוג שני ב-</p>
-              <p className="flex items-center mr-10 justify-center gap-2 leading-none">
-                <span className="text-center font-black text-gold text-8xl">99</span>
-                <span className="text-center font-bold text-gold text-4xl">₪</span>
-              </p>
-              <p className="text-center text-3xl font-semibold leading-none text-white">בלבד</p>
-              <p className="mt-2 text-[1rem] leading-tight text-white">הזול מביניהם · עד גמר המלאי</p>
-            </div>
           </div>
         </div>
       </div>

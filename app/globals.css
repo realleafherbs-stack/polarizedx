@@ -44,6 +44,24 @@ html, body {
   }
 }
 
+/* HomeOffer image column height: hand-written for the same reason as
+   .related-slide above — lg:'s @media block emits earlier than sm:'s in the
+   compiled CSS when --breakpoint-lg is overridden, so sm: would win the
+   cascade at desktop widths instead of lg:. */
+.home-offer-media {
+  height: 270px;
+}
+@media (min-width: 640px) {
+  .home-offer-media {
+    height: 340px;
+  }
+}
+@media (min-width: 900px) {
+  .home-offer-media {
+    height: 100%;
+  }
+}
+
 /* FeatureBar icons + text: between the lg breakpoint (900px) and 1250px, the
    4-item row is too narrow for full-size icons and text without crowding the
    divider lines, so both shrink further in that band. From 1250px there's
@@ -137,6 +155,26 @@ html, body {
   }
 }
 
+/* Story heading/copy: the clamp values are sized for wide desktop; between
+   the lg breakpoint (900px) and 1250px the column is too narrow for them,
+   so both shrink further in that band. From 1250px there's enough room. */
+@media (min-width: 900px) and (max-width: 1249.98px) {
+  .story-heading {
+    font-size: clamp(2.75rem, 5vw, 4rem);
+  }
+  .story-copy {
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+  }
+}
+@media (min-width: 1250px) {
+  .story-heading {
+    font-size: clamp(3.5rem, 7vw, 6.4rem);
+  }
+  .story-copy {
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+  }
+}
+
 /* ── Almoni DL AAA ── */
 @font-face {
   font-family: "Almoni";
@@ -193,24 +231,6 @@ html, body {
   animation: marquee 90s linear infinite;
 }
 
-/* Hero promo panel: the gold blade slices the panel off the photo on a diagonal.
-   --blade is how far the top edge is pushed in; the inner layer repeats the same
-   polygon shifted 3px right, leaving the gold layer showing as the diagonal rule. */
-.hero-blade {
-  clip-path: polygon(var(--blade) 0, 100% 0, 100% 100%, 0 100%);
-}
-.hero-blade-inner {
-  clip-path: polygon(calc(var(--blade) + 3px) 0, 100% 0, 100% 100%, 3px 100%);
-}
-
-/* Mobile promo band: same blade, rotated to slice horizontally across the top. */
-.hero-blade-m {
-  clip-path: polygon(0 var(--blade-y), 100% 0, 100% 100%, 0 100%);
-}
-.hero-blade-m-inner {
-  clip-path: polygon(0 calc(var(--blade-y) + 3px), 100% 3px, 100% 100%, 0 100%);
-}
-
 /* FeatureBar gold icons: the source PNGs are white glyphs on transparency, so we
    mask-fill them with the gold token rather than colour-shifting with filters. */
 .featurebar-icon-mask {
@@ -218,6 +238,16 @@ html, body {
   background-color: var(--color-gold);
   -webkit-mask: var(--icon) center / contain no-repeat;
   mask: var(--icon) center / contain no-repeat;
+}
+
+/* Collection grid mobile scroll hint: a small nudging arrow indicating the
+   product row is horizontally swipeable. */
+@keyframes slider-hint-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-6px); }
+}
+.slider-hint-arrow {
+  animation: slider-hint-nudge 1.4s ease-in-out infinite;
 }
 
 /* Cart "added" toast */
@@ -329,3 +359,4 @@ body {
   margin: 1em 0;
 }
 .blog-body p::after { content: ""; display: table; clear: both; }
+
