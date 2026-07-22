@@ -125,9 +125,6 @@ export async function POST(req: NextRequest) {
     ErrorUrl: `${siteUrl}/payment/failure`,
   });
 
-  if (customer?.firstName) params.set("ClientName", customer.firstName);
-  if (customer?.lastName) params.set("ClientLName", customer.lastName);
-
   let signedParams: string;
   try {
     const resp = await fetch(`https://pay.hyp.co.il/p/?${params.toString()}`);
