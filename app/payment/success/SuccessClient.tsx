@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "../../context/CartContext";
@@ -25,72 +25,26 @@ function CheckIcon() {
 export default function SuccessClient() {
   const searchParams = useSearchParams();
   const { clearCart } = useCart();
-  // Reaching this page at all means Hyp Pay already confirmed payment via
-  // redirect — the customer paid. Confirming the order in our own system
-  // (marking paid, sending the Payper invoice) is our bookkeeping, and must
-  // never surface as a scary error to someone who already paid. It's a
-  // best-effort background call; failures are logged for admin follow-up
-  // (the order stays recoverable from the CRM Orders page) but the customer
-  // always sees "thank you."
-  const [status, setStatus] = useState<"confirming" | "done" | "error">("confirming");
   const orderId = searchParams.get("Order");
 
   useEffect(() => {
-    if (!orderId) {
-      // No order id at all means we can't even attempt confirmation —
-      // this is the one genuine case worth flagging to the customer.
-      setStatus("error");
-      return;
-    }
-    setStatus("done");
     clearCart();
-    fetch("/api/payment/confirm", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId }),
-    })
-      .then(async (res) => {
-        const data = await res.json();
-        if (!res.ok || data.error) throw new Error(data.error ?? "Order confirmation failed");
-      })
-      .catch((err) => console.error("[payment/success] order confirmation failed:", orderId, err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <main dir="rtl">
-      {/* Status banner */}
       <section
         className="relative overflow-hidden border-b-[3px] px-6 py-16 text-center sm:py-20"
         style={{ background: DEEP, borderColor: ACCENT }}
       >
         <div className="mx-auto flex max-w-xl flex-col items-center gap-4">
-          {status !== "error" && <CheckIcon />}
-          {status === "confirming" && (
-            <h1 className="text-2xl font-black sm:text-3xl" style={{ color: ON_DEEP }}>
-              מאשרים את ההזמנה...
-            </h1>
-          )}
-          {status === "done" && (
-            <>
-              <h1 className="text-3xl font-black sm:text-4xl" style={{ color: ON_DEEP }}>
-                התשלום התקבל בהצלחה!
-              </h1>
-              <p className="text-base sm:text-lg" style={{ color: "rgba(248,248,245,.76)" }}>
-                שלחנו לך מייל אישור עם פרטי ההזמנה.
-              </p>
-            </>
-          )}
-          {status === "error" && (
-            <>
-              <h1 className="text-2xl font-black sm:text-3xl" style={{ color: ON_DEEP }}>
-                התשלום עבר, אך אירעה שגיאה באישור ההזמנה
-              </h1>
-              <p className="text-base sm:text-lg" style={{ color: "rgba(248,248,245,.76)" }}>
-                אנא צרו קשר איתנו ונוודא שההזמנה נקלטה.
-              </p>
-            </>
-          )}
+          <CheckIcon />
+          <h1 className="text-3xl font-black sm:text-4xl" style={{ color: ON_DEEP }}>
+            התשלום התקבל בהצלחה!
+          </h1>
+          <p className="text-base sm:text-lg" style={{ color: "rgba(248,248,245,.76)" }}>
+            שלחנו לך מייל אישור עם פרטי ההזמנה.
+          </p>
           {orderId && (
             <p dir="ltr" className="mt-1 text-sm font-bold tracking-wide" style={{ color: ACCENT }}>
               #{orderId}
@@ -99,27 +53,23 @@ export default function SuccessClient() {
         </div>
       </section>
 
-      {/* What happens next */}
-      {status === "done" && (
-        <section style={{ background: SURFACE }}>
-          <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 px-6 py-12 sm:grid-cols-3 sm:py-16">
-            {[
-              { step: "01", text: "אורזים את ההזמנה שלך במחסן." },
-              { step: "02", text: "מקבלים SMS עם קישור למעקב אחר המשלוח." },
-              { step: "03", text: "המשלוח מגיע אליך עד 3 ימי עסקים." },
-            ].map(({ step, text }) => (
-              <div key={step} className="border-t-2 pt-3 text-center sm:text-right" style={{ borderColor: ACCENT }}>
-                <span dir="ltr" className="text-xs font-black tracking-widest" style={{ color: ACCENT }}>
-                  {step}
-                </span>
-                <p className="mt-1 text-sm" style={{ color: MUTED }}>{text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+      <section style={{ background: SURFACE }}>
+        <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 px-6 py-12 sm:grid-cols-3 sm:py-16">
+          {[
+            { step: "01", text: "אורזים את ההזמנה שלך במחסן." },
+            { step: "02", text: "מקבלים SMS עם קישור למעקב אחר המשלוח." },
+            { step: "03", text: "המשלוח מגיע אליך עד 3 ימי עסקים." },
+          ].map(({ step, text }) => (
+            <div key={step} className="border-t-2 pt-3 text-center sm:text-right" style={{ borderColor: ACCENT }}>
+              <span dir="ltr" className="text-xs font-black tracking-widest" style={{ color: ACCENT }}>
+                {step}
+              </span>
+              <p className="mt-1 text-sm" style={{ color: MUTED }}>{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      {/* CTAs */}
       <section className="px-6 pb-16" style={{ background: SURFACE }}>
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 border-t pt-10 sm:flex-row sm:justify-center" style={{ borderColor: LINE }}>
           <Link
