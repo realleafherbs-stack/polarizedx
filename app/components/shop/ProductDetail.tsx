@@ -147,7 +147,7 @@ export default function ProductDetail({ product, relatedProducts = [], reviews =
                   <button
                     key={i}
                     onClick={() => setSelectedThumb(i)}
-                    className="grid h-18 w-21.5 shrink-0 place-items-center border p-1 transition-transform hover:-translate-y-0.5"
+                    className="grid h-18 w-21.5 shrink-0 place-items-center overflow-hidden border p-1 transition-transform hover:-translate-y-0.5"
                     style={{ borderColor: selectedThumb === i ? INK : LINE, borderWidth: selectedThumb === i ? 2 : 1, background: PAPER_RAISED }}
                   >
                     <Image src={img} alt="" width={80} height={62} className="h-full w-full object-contain" style={{ background: "#fff" }} />
