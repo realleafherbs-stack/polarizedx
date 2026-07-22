@@ -120,6 +120,7 @@ export async function POST(req: NextRequest) {
     PageLang: "HEB",
     sendemail: "True",
     MoreData: "True",
+    tmp: "3",
     SuccessUrl: `${siteUrl}/payment/success`,
     ErrorUrl: `${siteUrl}/payment/failure`,
   });
