@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# docs are kept local, never committed
+*.md
+__tests__/
+*.test.ts
+*.test.tsx
+vitest.config.ts
+vitest.setup.ts
