@@ -34,7 +34,7 @@ export default function SuccessClient() {
   return (
     <main dir="rtl">
       <section
-        className="relative overflow-hidden border-b-[3px] px-6 py-16 text-center sm:py-20"
+        className="relative mt-10 overflow-hidden border-b-[3px] px-6 py-16 text-center sm:py-20"
         style={{ background: DEEP, borderColor: ACCENT }}
       >
         <div className="mx-auto flex max-w-xl flex-col items-center gap-4">
